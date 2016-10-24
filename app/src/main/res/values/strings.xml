@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Shopper</string>
+    <string name="shopping_lists_title">All shopping lists</string>
+    <string name="scan_barcode_title">Scan barcode</string>
+    <string name="house_stock_title">House stock</string>
+    <string name="trash_stock_title">Trash stock</string>
+    <string name="drawer_menu_header_title">Go to:</string>
+    <string name="successfully_saved_shoppinglist_message">Shopping list saved</string>
+    <string name="loading_shoppinglists_error">Shopping lists loading failed</string>
+    <string name="add">Create new list</string>
+    <string name="no_shoppinglists_all">You don\'t have any shopping lists</string>
+    <string name="no_shoppinglists_add">Add new shopping lists</string>
+    <string name="shopping_list_deletion_successfull">Shopping list deleted successfuly</string>
+    <string name="no_products_all">You don\'t have any products on the list</string>
+    <string name="no_products_add">Add a product to list</string>
+    <string name="clicked_shopping_list">CHLICKED_SHOPPING_LIST\\</string>
+    <string name="label_product_name">Product name: </string>
+    <string name="label_product_brand">Product brand: </string>
+    <string name="label_product_description">Product description:</string>
+    <string name="label_product_amount">Amount of product:</string>
+    <string name="save">Save</string>
+    <string name="new_shopping_list">New shopping list</string>
+    <string name="label_shopping_list_name">Name:</string>
+    <string name="intent_action">Action</string>
+    <string name="new_product">New product</string>
+</resources>
