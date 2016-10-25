@@ -30,7 +30,7 @@ public class DataSourceDealer {
     }
 
     public void saveShoppingList(final SaveShoppingListCallback callback) {
-        dataBase.createShoppingList(cache.readShoppingList(), new DataSourceAPI.PutShooppingListCallback() {
+        dataBase.createOrUpdateShoppingList(cache.readShoppingList(), new DataSourceAPI.PutShooppingListCallback() {
             @Override
             public void onShoppingListPut() {
                 ShopperLog.i("Shopping list saving: created shoppingList");

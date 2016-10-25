@@ -90,8 +90,8 @@ public class DataBase {
         productsRepository.createOrUpdateProduct(product, callback);
     }
 
-    public void createShoppingList(final ShoppingList shoppingList, final DataSourceAPI.PutShooppingListCallback callback) {
-        shoppingListsRepository.createShoppingList(shoppingList, new DataSourceAPI.PutShooppingListCallback() {
+    public void createOrUpdateShoppingList(final ShoppingList shoppingList, final DataSourceAPI.PutShooppingListCallback callback) {
+        shoppingListsRepository.createOrUpdateShoppingList(shoppingList, new DataSourceAPI.PutShooppingListCallback() {
 
             @Override
             public void onShoppingListPut() {

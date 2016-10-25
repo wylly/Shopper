@@ -75,7 +75,13 @@ public class ShoppingListsRepository {
         return map;
     }
 
-    public void createShoppingList(ShoppingList shoppingListCache, DataSourceAPI.PutShooppingListCallback putShooppingListCallback) {
-
+    public void createOrUpdateShoppingList(ShoppingList shoppingListCache, DataSourceAPI.PutShooppingListCallback putShooppingListCallback) {
+        try {
+            shopHelperDatabaseHelper.getShoppingListDao().createOrUpdate(shoppingListCache);
+            putShooppingListCallback.onShoppingListPut();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            putShooppingListCallback.onShoppingListPutFailure();
+        }
     }
 }
