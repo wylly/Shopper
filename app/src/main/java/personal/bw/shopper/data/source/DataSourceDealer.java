@@ -100,8 +100,8 @@ public class DataSourceDealer {
     }
 
 
-    public void addProductToCache(Product product) {
-        cache.createProduct(product);
+    public void addEditProductCache(Product product) {
+        cache.createOrUpdateProduct(product);
     }
 
     public void deleteProductFromCache(Product product) {

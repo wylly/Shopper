@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.view.*;
 import android.widget.EditText;
 import personal.bw.shopper.R;
+import personal.bw.shopper.data.models.Product;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -34,8 +35,19 @@ public class ProductDetailsFragment extends Fragment implements ProductDetailsCo
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.root = inflater.inflate(R.layout.product_details, container, false);
         setHasOptionsMenu(true);
-
         return root;
+    }
+
+    @Override
+    public void setupPrefilledInputs(Product product) {
+        setEditTextValue(Inputs.NAME, product.getName());
+        setEditTextValue(Inputs.BRAND, product.getBrand());
+        setEditTextValue(Inputs.DESCRIPTION, product.getDescription());
+        setEditTextValue(Inputs.AMOUNT, product.getAmount());
+    }
+
+    private void setEditTextValue(Inputs input, String productValue) {
+        ((EditText)getView().findViewById(input.getId())).setText(productValue);
     }
 
     @Override
@@ -46,6 +58,7 @@ public class ProductDetailsFragment extends Fragment implements ProductDetailsCo
     @Override
     public void onResume() {
         super.onResume();
+        presenter.start();
     }
 
     @Override
@@ -58,10 +71,10 @@ public class ProductDetailsFragment extends Fragment implements ProductDetailsCo
         switch (item.getItemId()) {
             case R.id.save_product: {
                 presenter.saveProduct(
-                        getValue(Inputs.NAME),
-                        getValue(Inputs.BRAND),
-                        getValue(Inputs.DESCRIPTION),
-                        getValue(Inputs.AMOUNT)
+                        getEditTextValue(Inputs.NAME),
+                        getEditTextValue(Inputs.BRAND),
+                        getEditTextValue(Inputs.DESCRIPTION),
+                        getEditTextValue(Inputs.AMOUNT)
                 );
                 break;
             }
@@ -74,7 +87,7 @@ public class ProductDetailsFragment extends Fragment implements ProductDetailsCo
         inflater.inflate(R.menu.product_details_fragment_menu, menu);
     }
 
-    private String getValue(Inputs input) {
+    private String getEditTextValue(Inputs input) {
         return ((EditText) root.findViewById(input.getId())).getText().toString();
     }
 

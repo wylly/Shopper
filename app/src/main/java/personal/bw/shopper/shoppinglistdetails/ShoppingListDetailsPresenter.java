@@ -26,7 +26,7 @@ public class ShoppingListDetailsPresenter implements ShoppingListDetailsContract
 
     @Override
     public void start() {
-
+        loadProducts();
     }
 
     @Override

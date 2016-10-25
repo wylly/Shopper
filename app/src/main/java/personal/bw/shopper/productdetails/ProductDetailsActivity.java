@@ -36,7 +36,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private Product getProduct(ShoppingListDetailsFragment.Action action) {
         switch (action) {
             case EDIT_PRODUCT: {
-                return (Product) getIntent().getSerializableExtra(ShoppingListDetailsFragment.CLICKED_PRODUCT);
+                return Product.getCopyOf((Product) getIntent().getSerializableExtra(ShoppingListDetailsFragment.CLICKED_PRODUCT));
             }
             case NEW_PRODUCT: {
                 return new Product(getString(R.string.new_product));

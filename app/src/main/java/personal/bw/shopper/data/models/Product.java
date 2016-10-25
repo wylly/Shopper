@@ -41,8 +41,13 @@ public class Product implements Serializable {
     Product() {
     }
 
+
     public Product(String name) {
         this.name = name;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
@@ -114,6 +119,19 @@ public class Product implements Serializable {
         this.bestBefore = product.bestBefore;
         this.barCode = product.barCode;
         this.checked = product.checked;
+    }
+
+    public static Product getCopyOf(Product product) {
+        Product p = new Product();
+        p.id = product.id;
+        p.name = product.name;
+        p.description = product.description;
+        p.brand = product.brand;
+        p.amount = product.amount;
+        p.bestBefore = product.bestBefore;
+        p.barCode = product.barCode;
+        p.checked = product.checked;
+        return p;
     }
 
     @Override

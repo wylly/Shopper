@@ -28,7 +28,13 @@ public class Cache {
 
     }
 
-    public void createProduct(Product product) {
+    public void createOrUpdateProduct(Product product) {
+        for(Product cacheProduct : shoppingListToProductsCache){
+            if(cacheProduct.getId().equals(product.getId())){
+                updateProduct(product,cacheProduct);
+                return;
+            }
+        }
         shoppingListToProductsCache.add(product);
     }
 
@@ -40,8 +46,8 @@ public class Cache {
         this.shoppingListToProductsCache = products;
     }
 
-    private void updateProduct() {
-
+    private void updateProduct(Product source, Product destination) {
+        destination.copyFrom(source);
     }
 
     public void deleteProduct(Product product) {
