@@ -103,7 +103,7 @@ public class Product implements Serializable {
     }
 
     public Boolean getChecked() {
-        return checked;
+        return checked != null? checked : false;
     }
 
     public void setChecked(Boolean checked) {
@@ -111,7 +111,6 @@ public class Product implements Serializable {
     }
 
     public void copyFrom(Product product) {
-        this.id = product.id;
         this.name = product.name;
         this.description = product.description;
         this.brand = product.brand;

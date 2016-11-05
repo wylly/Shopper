@@ -21,7 +21,7 @@ public interface ShoppingListDetailsContract {
 
         void showProductDeletionError(String info);
 
-        void showProductDetailsUi(Product clickedProduct);
+        void showProductDetailsUi(int clickedProduct);
 
         void showLoadingProductsError();
 
@@ -44,13 +44,13 @@ public interface ShoppingListDetailsContract {
 
         void loadProducts();
 
-        void deleteProduct(Product clickedProduct);
+        void deleteProduct(int clickedProduct);
 
         void result(int requestCode, int resultCode);
 
-        void markProductChecked(Product product);
+        void markProductChecked(int product);
 
-        void markProductUnchecked(Product product);
+        void markProductUnchecked(int product);
 
         CharSequence getShoppingListName();
 

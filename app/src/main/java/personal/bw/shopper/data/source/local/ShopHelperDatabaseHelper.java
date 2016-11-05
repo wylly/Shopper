@@ -4,9 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.PreparedQuery;
-import com.j256.ormlite.stmt.QueryBuilder;
-import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import personal.bw.shopper.R;
@@ -15,12 +12,11 @@ import personal.bw.shopper.data.models.ShoppingList;
 import personal.bw.shopper.data.models.ShoppingListProduct;
 
 import java.sql.SQLException;
-import java.util.List;
 
 public class ShopHelperDatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     private static final String DATABASE_NAME = "shopHelperDatabase";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private Dao<Product, Long> productDao;
     private Dao<ShoppingList, Long> shoppingListDao;

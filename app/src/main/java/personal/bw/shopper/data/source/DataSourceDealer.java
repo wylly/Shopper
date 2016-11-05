@@ -100,12 +100,20 @@ public class DataSourceDealer {
     }
 
 
-    public void addEditProductCache(Product product) {
-        cache.createOrUpdateProduct(product);
+    public void addProductCache(Product product) {
+        cache.createProduct(product);
     }
 
-    public void deleteProductFromCache(Product product) {
+    public void deleteProductFromCache(int product) {
         cache.deleteProduct(product);
         isProductClearRequired = true;
+    }
+
+    public Product getProductFromCache(int product) {
+        return cache.readProduct(product);
+    }
+
+    public void updateProductInCache(int productId, Product product) {
+        cache.updateProduct(productId,product);
     }
 }

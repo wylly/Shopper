@@ -61,7 +61,7 @@ public class ShoppingListDetailsPresenter implements ShoppingListDetailsContract
     }
 
     @Override
-    public void deleteProduct(Product clickedProduct) {
+    public void deleteProduct(int clickedProduct) {
         repository.deleteProductFromCache(clickedProduct);
         loadProducts();
     }
@@ -90,13 +90,13 @@ public class ShoppingListDetailsPresenter implements ShoppingListDetailsContract
     }
 
     @Override
-    public void markProductChecked(Product product) {
-        product.setChecked(true);
+    public void markProductChecked(int product) {
+        repository.getProductFromCache(product).setChecked(true);
     }
 
     @Override
-    public void markProductUnchecked(Product product) {
-        product.setChecked(false);
+    public void markProductUnchecked(int product) {
+        repository.getProductFromCache(product).setChecked(false);
     }
 
     @Override

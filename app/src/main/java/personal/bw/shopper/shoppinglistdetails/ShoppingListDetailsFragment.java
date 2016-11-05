@@ -15,7 +15,9 @@ import android.widget.*;
 import personal.bw.shopper.R;
 import personal.bw.shopper.ScrollAndRefreshLayout;
 import personal.bw.shopper.data.models.Product;
+import personal.bw.shopper.productdetails.ProductDetailsActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -41,7 +43,7 @@ public class ShoppingListDetailsFragment extends Fragment implements ShoppingLis
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        listAdapter = new ProductsListAdapter(new ArrayList<Product>(), mItemListener, getContext());
     }
 
     @Override
@@ -131,8 +133,8 @@ public class ShoppingListDetailsFragment extends Fragment implements ShoppingLis
     }
 
     private void startAddProductActivity() {
-        Intent intent = new Intent(getContext(), ShoppingListDetailsActivity.class);
-        intent.putExtra(getString(R.string.intent_action), Action.EDIT_PRODUCT);
+        Intent intent = new Intent(getContext(), ProductDetailsActivity.class);
+        intent.putExtra(getString(R.string.intent_action), Action.NEW_PRODUCT);
         startActivity(intent);
     }
 
@@ -189,8 +191,8 @@ public class ShoppingListDetailsFragment extends Fragment implements ShoppingLis
     }
 
     @Override
-    public void showProductDetailsUi(Product clickedProduct) {
-        Intent intent = new Intent(getContext(), ShoppingListDetailsActivity.class);
+    public void showProductDetailsUi(int clickedProduct) {
+        Intent intent = new Intent(getContext(), ProductDetailsActivity.class);
         intent.putExtra(getString(R.string.intent_action), Action.EDIT_PRODUCT);
         intent.putExtra(CLICKED_PRODUCT, clickedProduct);
         startActivity(intent);
@@ -216,19 +218,19 @@ public class ShoppingListDetailsFragment extends Fragment implements ShoppingLis
 
     ProductsListAdapter.ProductListener mItemListener = new ProductsListAdapter.ProductListener() {
         @Override
-        public void onProductClick(Product clickedProduct) {
-            showProductDetailsUi(clickedProduct);
+        public void onProductClick(int clickedProductId) {
+            showProductDetailsUi(clickedProductId);
         }
 
         @Override
-        public void onDeleteIconClick(final Product clickedProduct) {
+        public void onDeleteIconClick(final int clickedProductId) {
             new AlertDialog.Builder(getActivity())
                     .setTitle("Deleting product")
                     .setMessage("This will completely remove product from this Shopper application")
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            presenter.deleteProduct(clickedProduct);
+                            presenter.deleteProduct(clickedProductId);
                         }
                     }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                 @Override
@@ -240,13 +242,13 @@ public class ShoppingListDetailsFragment extends Fragment implements ShoppingLis
         }
 
         @Override
-        public void onProductCheck(Product clickedProduct) {
-            presenter.markProductChecked(clickedProduct);
+        public void onProductCheck(int clickedProductId) {
+            presenter.markProductChecked(clickedProductId);
         }
 
         @Override
-        public void onProductUncheck(Product product) {
-            presenter.markProductUnchecked(product);
+        public void onProductUncheck(int clickedProductId) {
+            presenter.markProductUnchecked(clickedProductId);
         }
     };
 

@@ -11,28 +11,51 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class ProductDetailsPresenter implements ProductDetailsContract.Presenter {
     private final ProductDetailsContract.View productDetailsView;
     private final DataSourceDealer repository;
-    private Product product;
+    private int productId;
 
-    public ProductDetailsPresenter(@NonNull ProductDetailsContract.View productDetailsFragment, @NonNull DataSourceDealer repository, Product product) {
+    public ProductDetailsPresenter(@NonNull ProductDetailsContract.View productDetailsFragment, @NonNull DataSourceDealer repository, int productId) {
         this.productDetailsView = checkNotNull(productDetailsFragment, "productDetailsFragment cannot be null");
         this.repository = repository;
         this.productDetailsView.setPresenter(this);
-        this.product = product;
+        this.productId = productId;
     }
 
     @Override
     public void start() {
-        productDetailsView.setupPrefilledInputs(product);
+        if (!isNew()) {
+            populateProduct();
+        }
+    }
+
+    private void populateProduct() {
+        if (isNew()) {
+            throw new RuntimeException("Task is new");
+        }
+        Product product = repository.getProductFromCache(productId);
+        if (productDetailsView.isActive()) {
+            productDetailsView.setName(product.getName());
+            productDetailsView.setBrand(product.getBrand());
+            productDetailsView.setDescription(product.getDescription());
+            productDetailsView.setAmount(product.getAmount());
+        }
     }
 
     @Override
     public void saveProduct(String name, String brand, String description, String amount) {
-        repository.addEditProductCache(
-                new ProductBuilder(name)
-                        .withBrand(brand)
-                        .withDescription(description)
-                        .withAmount(amount)
-                        .build()
-        );
+        Product product = new ProductBuilder(name)
+                .withBrand(brand)
+                .withDescription(description)
+                .withAmount(amount)
+                .build();
+        if (isNew()) {
+            repository.addProductCache(product);
+        }else{
+            repository.updateProductInCache(productId,product);
+        }
+        productDetailsView.goToProductsList();
+    }
+
+    private boolean isNew() {
+        return productId == -1;
     }
 }

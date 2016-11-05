@@ -1,6 +1,7 @@
 package personal.bw.shopper.data.source;
 
 import android.content.Context;
+import com.google.common.collect.Lists;
 import com.j256.ormlite.stmt.*;
 import personal.bw.shopper.data.models.Product;
 import personal.bw.shopper.data.models.ShoppingList;
@@ -33,7 +34,11 @@ public class ProductsForShoppingListRepository {
 
     public void readProductsForShoppingList(ShoppingList shoppingList, DataSourceAPI.LoadProductsForShoppingListCallback callback) {
         try {
-            callback.onProductsForShoppingListLoaded(lookupProductsForShoppingList(shoppingList));
+            if(shoppingList.getId()!=null){
+                callback.onProductsForShoppingListLoaded(lookupProductsForShoppingList(shoppingList));
+            }else{
+                callback.onProductsForShoppingListLoaded(Lists.<Product>newLinkedList());
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             callback.onDataNotAvailable();

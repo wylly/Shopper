@@ -107,7 +107,7 @@ public class ShoppingListsFragment extends Fragment implements ShoppingListsCont
         noShoppingListsIcon = (ImageView) root.findViewById(R.id.noShoppingListsIcon);
         noShoppingListsMainView = (TextView) root.findViewById(R.id.noShoppingListsMain);
         noShoppingListsAddView = (TextView) root.findViewById(R.id.noShoppingListsAdd);
-        noShoppingListsAddView.setOnClickListener(new View.OnClickListener() {
+        noShoppingListsView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showAddShoppingList();
@@ -124,7 +124,9 @@ public class ShoppingListsFragment extends Fragment implements ShoppingListsCont
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            //TODO options menu handling here
+            case R.id.add_new_shopping_list:
+                showAddShoppingList();
+                break;
         }
         return true;
     }

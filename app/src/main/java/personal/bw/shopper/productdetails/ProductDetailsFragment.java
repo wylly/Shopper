@@ -1,7 +1,7 @@
 package personal.bw.shopper.productdetails;
 
 
-import android.content.Intent;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,55 +10,43 @@ import android.support.v4.app.Fragment;
 import android.view.*;
 import android.widget.EditText;
 import personal.bw.shopper.R;
-import personal.bw.shopper.data.models.Product;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ProductDetailsFragment extends Fragment implements ProductDetailsContract.View {
     private ProductDetailsContract.Presenter presenter;
-    private View root;
+    private EditText name;
+    private EditText description;
+    private EditText brand;
+    private EditText amount;
+    private View rootView;
 
     public ProductDetailsFragment() {
     }
 
-    public static ProductDetailsFragment newInstance() {
-        return new ProductDetailsFragment();
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        this.root = inflater.inflate(R.layout.product_details, container, false);
-        setHasOptionsMenu(true);
-        return root;
-    }
-
-    @Override
-    public void setupPrefilledInputs(Product product) {
-        setEditTextValue(Inputs.NAME, product.getName());
-        setEditTextValue(Inputs.BRAND, product.getBrand());
-        setEditTextValue(Inputs.DESCRIPTION, product.getDescription());
-        setEditTextValue(Inputs.AMOUNT, product.getAmount());
-    }
-
-    private void setEditTextValue(Inputs input, String productValue) {
-        ((EditText)getView().findViewById(input.getId())).setText(productValue);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
 
     @Override
     public void onResume() {
         super.onResume();
         presenter.start();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        name = (EditText) this.getView().findViewById(R.id.input_product_name);
+        description = (EditText) this.getView().findViewById(R.id.input_product_brand);
+        brand = (EditText) this.getView().findViewById(R.id.input_product_description);
+        amount = (EditText) this.getView().findViewById(R.id.input_product_amount);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.product_details, container, false);
+        setHasOptionsMenu(true);
+        setRetainInstance(true);
+        return rootView;
     }
 
     @Override
@@ -71,10 +59,10 @@ public class ProductDetailsFragment extends Fragment implements ProductDetailsCo
         switch (item.getItemId()) {
             case R.id.save_product: {
                 presenter.saveProduct(
-                        getEditTextValue(Inputs.NAME),
-                        getEditTextValue(Inputs.BRAND),
-                        getEditTextValue(Inputs.DESCRIPTION),
-                        getEditTextValue(Inputs.AMOUNT)
+                        name.getText().toString(),
+                        description.getText().toString(),
+                        brand.getText().toString(),
+                        amount.getText().toString()
                 );
                 break;
             }
@@ -83,12 +71,16 @@ public class ProductDetailsFragment extends Fragment implements ProductDetailsCo
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.product_details_fragment_menu, menu);
+    public void goToProductsList() {
+        getActivity().setResult(Activity.RESULT_OK);
+        getActivity().finish();
     }
 
-    private String getEditTextValue(Inputs input) {
-        return ((EditText) root.findViewById(input.getId())).getText().toString();
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.product_details_fragment_menu, menu);
+        super.onCreateOptionsMenu(menu,inflater);
     }
 
     @Override
@@ -109,31 +101,28 @@ public class ProductDetailsFragment extends Fragment implements ProductDetailsCo
         Snackbar.make(getView(), message, Snackbar.LENGTH_SHORT).show();
     }
 
-    private enum Inputs {
-        NAME {
-            int getId() {
-                return R.id.input_product_name;
-            }
-        },
+    @Override
+    public void setName(String name) {
+        this.name.setText(name);
+    }
 
-        BRAND {
-            int getId() {
-                return R.id.input_product_brand;
-            }
-        },
+    @Override
+    public void setDescription(String description) {
+        this.description.setText(description);
+    }
 
-        DESCRIPTION {
-            int getId() {
-                return R.id.input_product_description;
-            }
-        },
+    @Override
+    public void setBrand(String brand) {
+        this.brand.setText(brand);
+    }
 
-        AMOUNT {
-            int getId() {
-                return R.id.input_product_amount;
-            }
-        };
+    @Override
+    public void setAmount(String amount) {
+        this.amount.setText(amount);
+    }
 
-        abstract int getId();
+    @Override
+    public boolean isActive() {
+        return isAdded();
     }
 }

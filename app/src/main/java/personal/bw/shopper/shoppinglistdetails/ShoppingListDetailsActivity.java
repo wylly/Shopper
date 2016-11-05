@@ -1,5 +1,6 @@
 package personal.bw.shopper.shoppinglistdetails;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.GravityCompat;
@@ -25,7 +26,7 @@ public class ShoppingListDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.content_with_menues_activity);
 
         Menues.setupActionBar(this);
-        Menues.setupDrawerMenu(this,CURRENT);
+        drawerLayout = Menues.setupDrawerMenu(this,CURRENT);
         shoppingListDetailsPresenter = new ShoppingListDetailsPresenter(
                 setupShoppigListDetailsFragment(),
                 DataSourceDealer.getINSTANCE(getApplicationContext()),
@@ -41,6 +42,9 @@ public class ShoppingListDetailsActivity extends AppCompatActivity {
             case NEW:{
                 return new ShoppingList(getString(R.string.new_shopping_list));
             }
+            default: {
+                setResult(Activity.RESULT_CANCELED);
+            }
         }
         return new ShoppingList(getString(R.string.new_shopping_list));
     }
@@ -55,7 +59,7 @@ public class ShoppingListDetailsActivity extends AppCompatActivity {
             fragment = fragment.newInstance();
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), fragment, R.id.contentFrame);
         }
-        return null;
+        return fragment;
     }
 
     @Override
