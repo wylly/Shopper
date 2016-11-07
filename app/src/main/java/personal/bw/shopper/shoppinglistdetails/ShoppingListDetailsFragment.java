@@ -107,7 +107,7 @@ public class ShoppingListDetailsFragment extends Fragment implements ShoppingLis
         noProductsIcon = (ImageView) root.findViewById(R.id.noProductsIcon);
         noProductsMainView = (TextView) root.findViewById(R.id.noProductsMain);
         noProductsAddView = (TextView) root.findViewById(R.id.noProductsAdd);
-        noProductsAddView.setOnClickListener(new View.OnClickListener() {
+        noProductsView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startAddProductActivity();
