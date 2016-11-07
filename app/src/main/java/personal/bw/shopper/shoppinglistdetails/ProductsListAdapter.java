@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 import personal.bw.shopper.R;
 import personal.bw.shopper.data.models.Product;
@@ -95,10 +94,10 @@ public class ProductsListAdapter extends BaseAdapter {
             }
         });
 
-        productCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        productCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) itemListener.onProductCheck(position);
+            public void onClick(View view) {
+                if (((CheckBox) view).isChecked()) itemListener.onProductCheck(position);
                 else itemListener.onProductUncheck(position);
             }
         });

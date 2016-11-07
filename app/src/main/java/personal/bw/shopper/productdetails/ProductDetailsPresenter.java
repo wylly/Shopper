@@ -12,6 +12,7 @@ public class ProductDetailsPresenter implements ProductDetailsContract.Presenter
     private final ProductDetailsContract.View productDetailsView;
     private final DataSourceDealer repository;
     private int productId;
+    private boolean isChecked;
 
     public ProductDetailsPresenter(@NonNull ProductDetailsContract.View productDetailsFragment, @NonNull DataSourceDealer repository, int productId) {
         this.productDetailsView = checkNotNull(productDetailsFragment, "productDetailsFragment cannot be null");
@@ -37,6 +38,7 @@ public class ProductDetailsPresenter implements ProductDetailsContract.Presenter
             productDetailsView.setBrand(product.getBrand());
             productDetailsView.setDescription(product.getDescription());
             productDetailsView.setAmount(product.getAmount());
+            isChecked = product.getChecked();
         }
     }
 
@@ -46,6 +48,7 @@ public class ProductDetailsPresenter implements ProductDetailsContract.Presenter
                 .withBrand(brand)
                 .withDescription(description)
                 .withAmount(amount)
+                .withChecked(isChecked)
                 .build();
         if (isNew()) {
             repository.addProductCache(product);
