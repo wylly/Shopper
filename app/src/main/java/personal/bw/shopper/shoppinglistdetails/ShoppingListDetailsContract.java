@@ -55,5 +55,7 @@ public interface ShoppingListDetailsContract {
         CharSequence getShoppingListName();
 
         void saveShoppingList();
+
+        void setShoppingListName(String s);
     }
 }

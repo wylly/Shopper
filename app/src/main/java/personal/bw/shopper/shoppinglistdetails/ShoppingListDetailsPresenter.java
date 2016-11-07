@@ -75,6 +75,11 @@ public class ShoppingListDetailsPresenter implements ShoppingListDetailsContract
     }
 
     @Override
+    public void setShoppingListName(String name) {
+        this.shoppingList.setName(name);
+    }
+
+    @Override
     public void saveShoppingList() {
         repository.saveShoppingList(new DataSourceAPI.SaveShoppingListCallback() {
             @Override
