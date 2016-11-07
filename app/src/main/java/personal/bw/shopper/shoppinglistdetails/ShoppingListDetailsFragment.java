@@ -32,6 +32,7 @@ public class ShoppingListDetailsFragment extends Fragment implements ShoppingLis
     private ImageView noProductsIcon;
     private TextView noProductsMainView;
     private TextView noProductsAddView;
+    private EditText shoppingListName;
 
     public ShoppingListDetailsFragment() {
     }
@@ -71,7 +72,8 @@ public class ShoppingListDetailsFragment extends Fragment implements ShoppingLis
         ListView listView = (ListView) root.findViewById(R.id.productsList);
         listView.setAdapter(listAdapter);
         productsView = (LinearLayout) root.findViewById(R.id.productsLL);
-        ((EditText) root.findViewById(R.id.input_shopping_list_name)).setText(presenter.getShoppingListName());
+        this.shoppingListName = ((EditText) root.findViewById(R.id.input_shopping_list_name));
+        this.shoppingListName.setText(presenter.getShoppingListName());
         setUpNoProductsViews(root);
 
         final ScrollAndRefreshLayout scrollAndRefreshLayout = setupProgressIndicator(root);
@@ -121,6 +123,7 @@ public class ShoppingListDetailsFragment extends Fragment implements ShoppingLis
                 break;
             }
             case R.id.save_shopping_list: {
+                presenter.setShoppingListName(this.shoppingListName.getText().toString());
                 presenter.saveShoppingList();
                 getActivity().finish();
                 break;
@@ -279,7 +282,7 @@ public class ShoppingListDetailsFragment extends Fragment implements ShoppingLis
         showMessage("Unable to save shopping list.");
     }
 
-    public enum Action{
+    public enum Action {
         NEW_PRODUCT,
         EDIT_PRODUCT
     }
