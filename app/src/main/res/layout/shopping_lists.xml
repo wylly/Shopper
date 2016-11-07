@@ -33,7 +33,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_add_shopping_cart_black_24dp" />
+                android:src="@drawable/ic_queue_black_24dp" />
 
         <TextView
                 android:id="@+id/noShoppingListsMain"
