@@ -50,10 +50,11 @@ public class ProductsRepository {
             Dao.CreateOrUpdateStatus status = shopHelperDatabaseHelper.getProductDao().createOrUpdate(product);
             if (status.isCreated()) {
                 ShopperLog.i("Created: " + product.toString());
+                callback.onProductPut(true);
             } else {
                 ShopperLog.i("Updated: " + product.toString());
+                callback.onProductPut(false);
             }
-            callback.onProductPut();
         } catch (SQLException e) {
             e.printStackTrace();
             ShopperLog.e("Exception while create or update: " + product.toString());

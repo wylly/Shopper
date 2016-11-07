@@ -3,6 +3,7 @@ package personal.bw.shopper.data.source;
 import android.support.annotation.NonNull;
 import personal.bw.shopper.data.models.Product;
 import personal.bw.shopper.data.models.ShoppingList;
+import personal.bw.shopper.data.models.ShoppingListProduct;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public interface DataSourceAPI {
 
     void saveShoppingList(SaveShoppingListCallback callback);
 
-    interface PutShooppingListCallback{
+    interface PutShooppingListCallback {
         void onShoppingListPut();
 
         void onShoppingListPutFailure();
@@ -66,12 +67,12 @@ public interface DataSourceAPI {
     }
 
     interface PutProductCallback {
-        void onProductPut();
+        void onProductPut(boolean isCreated);
 
         void onPuttingError();
     }
 
-    interface SaveShoppingListCallback{
+    interface SaveShoppingListCallback {
         void onShoppingListSave();
 
         void onShoppingListSaveFailure();
@@ -81,5 +82,23 @@ public interface DataSourceAPI {
         void onProductsDeleteFailure();
 
         void onProductsDelete();
+    }
+
+    public interface LoadProductForShoppingListCallback {
+        void onProductForShoppingListLoad(ShoppingListProduct shoppingListProduct);
+
+        void onProductForShoppingListLoadFailure();
+    }
+
+    public interface CreateShoppingListProductCallback {
+        void onCreateSuccess();
+
+        void onCreateFailure();
+    }
+
+    public interface CreateOrUpdateAllProductsCallback {
+        void onCreateSuccess();
+
+        void onCreateFailure();
     }
 }

@@ -57,7 +57,18 @@ public class DataSourceDealer {
                 }
             });
         }
-        dataBase.createOrUpdateAllProducts(cache.readProducts());
+        dataBase.createOrUpdateAllProducts(cache.readProducts(), cache.readShoppingList(), new CreateOrUpdateAllProductsCallback() {
+            @Override
+            public void onCreateSuccess() {
+                ShopperLog.i("Create or update all products success");
+            }
+
+            @Override
+            public void onCreateFailure() {
+                ShopperLog.e("Create or update all products success");
+                callback.onShoppingListSaveFailure();
+            }
+        });
     }
 
     public void getOrderedShoppingLists(@NonNull LoadShoppingListsCallback callback) {

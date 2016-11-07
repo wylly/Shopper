@@ -69,17 +69,32 @@ public class DataBase {
         });
     }
 
-    public void createOrUpdateAllProducts(List<Product> products) {
+    public void createOrUpdateAllProducts(List<Product> products, final ShoppingList shoppingList, final DataSourceAPI.CreateOrUpdateAllProductsCallback callback) {
         for (final Product product : products) {
             createOrUpdateProduct(product, new DataSourceAPI.PutProductCallback() {
                 @Override
-                public void onProductPut() {
+                public void onProductPut(boolean isCreated) {
                     ShopperLog.i("Putting product success: " + product);
+                    if (isCreated) {
+                        createShoppingListProduct(shoppingList, product, new DataSourceAPI.CreateShoppingListProductCallback() {
+                            @Override
+                            public void onCreateSuccess() {
+                                ShopperLog.i("Creating ShoppingListProduct success");
+                            }
+
+                            @Override
+                            public void onCreateFailure() {
+                                ShopperLog.e("Unable to create ShoppingListProduct :  shopping list = " + shoppingList + " product = " + product);
+                                callback.onCreateFailure();
+                            }
+                        });
+                    }
                 }
 
                 @Override
                 public void onPuttingError() {
                     ShopperLog.e("Putting many products failed on: " + product);
+                    callback.onCreateFailure();
                 }
             });
 
@@ -117,5 +132,9 @@ public class DataBase {
 
     public void readProductsForShoppingList(ShoppingList shoppingList, DataSourceAPI.LoadProductsForShoppingListCallback callback) {
         productsForShoppingListRepository.readProductsForShoppingList(shoppingList, callback);
+    }
+
+    public void createShoppingListProduct(ShoppingList shoppingList, Product product, DataSourceAPI.CreateShoppingListProductCallback callback) {
+        productsForShoppingListRepository.createShoppingListProduct(shoppingList, product, callback);
     }
 }

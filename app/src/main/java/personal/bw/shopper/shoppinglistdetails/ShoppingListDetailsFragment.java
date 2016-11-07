@@ -108,13 +108,9 @@ public class ShoppingListDetailsFragment extends Fragment implements ShoppingLis
         noProductsAddView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showAddProduct();
+                startAddProductActivity();
             }
         });
-    }
-
-    public void showAddProduct() {
-        //TODO go to add new shopping list activity
     }
 
     @Override
@@ -126,6 +122,7 @@ public class ShoppingListDetailsFragment extends Fragment implements ShoppingLis
             }
             case R.id.save_shopping_list: {
                 presenter.saveShoppingList();
+                getActivity().finish();
                 break;
             }
         }
