@@ -73,7 +73,7 @@ public class ProductsListAdapter extends BaseAdapter {
             }
 
             if (productAmount != null) {
-                productBrand.setText(product.getAmount());
+                productAmount.setText(product.getAmount());
             }
         }
         View productViewText = view.findViewById(R.id.products_list_item);
