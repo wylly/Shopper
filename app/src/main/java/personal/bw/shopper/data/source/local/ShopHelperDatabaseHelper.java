@@ -34,6 +34,8 @@ public class ShopHelperDatabaseHelper extends OrmLiteSqliteOpenHelper {
             TableUtils.createTable(connectionSource, Product.class);
             TableUtils.createTable(connectionSource, ShoppingList.class);
             TableUtils.createTable(connectionSource, ShoppingListProduct.class);
+            putPredefinedShoppingList(createHouseList());
+            putPredefinedShoppingList(createTrashList());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -53,23 +55,39 @@ public class ShopHelperDatabaseHelper extends OrmLiteSqliteOpenHelper {
     }
 
     public Dao<Product, Long> getProductDao() throws SQLException {
-        if(productDao == null) {
+        if (productDao == null) {
             productDao = getDao(Product.class);
         }
         return productDao;
     }
 
     public Dao<ShoppingList, Long> getShoppingListDao() throws SQLException {
-        if(shoppingListDao == null) {
+        if (shoppingListDao == null) {
             shoppingListDao = getDao(ShoppingList.class);
         }
         return shoppingListDao;
     }
 
     public Dao<ShoppingListProduct, Long> getShoppingListProductDao() throws SQLException {
-        if(shoppingListProductDao == null) {
+        if (shoppingListProductDao == null) {
             shoppingListProductDao = getDao(ShoppingListProduct.class);
         }
         return shoppingListProductDao;
+    }
+
+    private ShoppingList createHouseList() {
+        return new ShoppingList( 0L, "House List");
+    }
+
+    private ShoppingList createTrashList() {
+        return new ShoppingList( 1L, "House List");
+    }
+
+    private void putPredefinedShoppingList(ShoppingList list) {
+        try {
+            getShoppingListDao().create(list);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

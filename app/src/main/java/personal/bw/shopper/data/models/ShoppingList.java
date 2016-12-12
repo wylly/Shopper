@@ -34,6 +34,11 @@ public class ShoppingList implements Serializable {
         this.date = new Date();
     }
 
+    public ShoppingList(Long id, String name) {
+        this(name);
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }

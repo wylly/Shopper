@@ -10,18 +10,35 @@ import android.widget.TextView;
 import personal.bw.shopper.R;
 import personal.bw.shopper.data.models.Product;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class ProductsListAdapter extends BaseAdapter {
     private List<Product> products;
     private ProductListener itemListener;
     private Context context;
+    private List<Product> sortedProducts;
 
     public ProductsListAdapter(List<Product> products, ProductListener itemListener, Context context) {
         this.products = products;
         this.itemListener = itemListener;
         this.context = context;
+        sortedProducts = new LinkedList<>();
     }
+
+    public void sortProductsDependingOnCheckState(){
+        for(Product p : products){
+            if(p.getChecked().equals(false)){
+                sortedProducts.add(p);
+            }
+        }
+        for(Product p : products){
+            if(p.getChecked().equals(true)){
+                sortedProducts.add(p);
+            }
+        }
+    }
+
 
     public void replaceData(List<Product> products) {
         this.setList(products);
