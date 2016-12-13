@@ -60,8 +60,13 @@ public class ShoppingListsRepository {
         }
     }
 
-    private ShoppingList readShoppingList(Long shoppingListId) throws SQLException {
-        return shopHelperDatabaseHelper.getShoppingListDao().queryForId(shoppingListId);
+    public ShoppingList readShoppingList(Long shoppingListId) {
+        try {
+            return shopHelperDatabaseHelper.getShoppingListDao().queryForId(shoppingListId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new ShoppingList("Empty shopping list");
     }
 
     //TODO Move or delete

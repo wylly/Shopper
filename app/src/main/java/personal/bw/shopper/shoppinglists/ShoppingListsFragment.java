@@ -237,6 +237,6 @@ public class ShoppingListsFragment extends Fragment implements ShoppingListsCont
 
     public enum Command{
         EDIT,
-        NEW
+        HOUSEHOLD_LIST, NEW
     }
 }
