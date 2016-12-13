@@ -16,7 +16,7 @@ import java.sql.SQLException;
 public class ShopHelperDatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     private static final String DATABASE_NAME = "shopHelperDatabase";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     public static final long HOUSEHOLD_LIST_ID = 0L;
     public static final long TRASH_LIST = 1L;
 

@@ -2,6 +2,7 @@ package personal.bw.shopper.data.source;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import com.j256.ormlite.stmt.QueryBuilder;
 import personal.bw.shopper.data.models.ShoppingList;
 import personal.bw.shopper.data.source.local.ShopHelperDatabaseHelper;
 
@@ -34,13 +35,19 @@ public class ShoppingListsRepository {
     }
 
     private List<ShoppingList> lookupAllShoppingListsOrdered() throws SQLException {
-        return shopHelperDatabaseHelper.getShoppingListDao().query(
-                shopHelperDatabaseHelper
-                        .getShoppingListDao()
-                        .queryBuilder()
-                        .groupBy(ShoppingList.DATE_FIELD_NAME)
-                        .prepare()
-        );
+        QueryBuilder<ShoppingList, Long> queryBuilder = shopHelperDatabaseHelper
+                .getShoppingListDao()
+                .queryBuilder();
+
+        queryBuilder.where()
+                .not()
+                .idEq(ShopHelperDatabaseHelper.HOUSEHOLD_LIST_ID)
+                .and()
+                .not()
+                .idEq(ShopHelperDatabaseHelper.TRASH_LIST);
+
+        queryBuilder.orderBy(ShoppingList.DATE_FIELD_NAME, false);
+        return shopHelperDatabaseHelper.getShoppingListDao().query(queryBuilder.prepare());
     }
 
     public void deleteShoppingList(ShoppingList shoppingListToDelete, DataSourceAPI.DeleteShoppingListCallback deleteShoppingListCallback) {
