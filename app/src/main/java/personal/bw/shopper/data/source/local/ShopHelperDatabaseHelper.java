@@ -17,6 +17,8 @@ public class ShopHelperDatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     private static final String DATABASE_NAME = "shopHelperDatabase";
     private static final int DATABASE_VERSION = 2;
+    public static final long HOUSEHOLD_LIST_ID = 0L;
+    public static final long TRASH_LIST = 1L;
 
     private Dao<Product, Long> productDao;
     private Dao<ShoppingList, Long> shoppingListDao;
@@ -76,11 +78,11 @@ public class ShopHelperDatabaseHelper extends OrmLiteSqliteOpenHelper {
     }
 
     private ShoppingList createHouseList() {
-        return new ShoppingList( 0L, "House List");
+        return new ShoppingList(0L, "House List");
     }
 
     private ShoppingList createTrashList() {
-        return new ShoppingList( 1L, "House List");
+        return new ShoppingList( 1L, "Trash List");
     }
 
     private void putPredefinedShoppingList(ShoppingList list) {

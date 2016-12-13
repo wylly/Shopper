@@ -137,4 +137,8 @@ public class DataBase {
     public void createShoppingListProduct(ShoppingList shoppingList, Product product, DataSourceAPI.CreateShoppingListProductCallback callback) {
         productsForShoppingListRepository.createShoppingListProduct(shoppingList, product, callback);
     }
+
+    public ShoppingList readShoppingList(long shoppingListId) {
+        return shoppingListsRepository.readShoppingList(shoppingListId);
+    }
 }
