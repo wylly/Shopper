@@ -6,19 +6,21 @@ import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import personal.bw.shopper.R;
 import personal.bw.shopper.data.models.Product;
 import personal.bw.shopper.data.models.ShoppingList;
 import personal.bw.shopper.data.models.ShoppingListProduct;
 
 import java.sql.SQLException;
 
+import static com.j256.ormlite.table.TableUtils.createTable;
+import static personal.bw.shopper.R.raw.ormlite_config;
+
 public class ShopHelperDatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     private static final String DATABASE_NAME = "shopHelperDatabase";
-    private static final int DATABASE_VERSION = 3;
-    public static final long HOUSEHOLD_LIST_ID = 0L;
-    public static final long TRASH_LIST = 1L;
+    private static final int DATABASE_VERSION = 4;
+    public static final long HOUSEHOLD_LIST_ID = 1L;
+    public static final long TRASH_LIST = 2L;
 
     private Dao<Product, Long> productDao;
     private Dao<ShoppingList, Long> shoppingListDao;
@@ -26,16 +28,16 @@ public class ShopHelperDatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     public ShopHelperDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION,
-                R.raw.ormlite_config);
+                ormlite_config);
     }
 
 
     @Override
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
         try {
-            TableUtils.createTable(connectionSource, Product.class);
-            TableUtils.createTable(connectionSource, ShoppingList.class);
-            TableUtils.createTable(connectionSource, ShoppingListProduct.class);
+            createTable(connectionSource, Product.class);
+            createTable(connectionSource, ShoppingList.class);
+            createTable(connectionSource, ShoppingListProduct.class);
             putPredefinedShoppingList(createHouseList());
             putPredefinedShoppingList(createTrashList());
         } catch (SQLException e) {
