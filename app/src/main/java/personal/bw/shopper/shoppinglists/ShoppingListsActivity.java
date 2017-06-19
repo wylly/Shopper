@@ -9,7 +9,7 @@ import personal.bw.shopper.ActivitiesEnum;
 import personal.bw.shopper.ActivityUtils;
 import personal.bw.shopper.Menues;
 import personal.bw.shopper.R;
-import personal.bw.shopper.data.source.DataSourceDealer;
+import personal.bw.shopper.data.datasource.DataSourceDealer;
 
 public class ShoppingListsActivity extends AppCompatActivity {
     private final static ActivitiesEnum CURRENT = ActivitiesEnum.LISTS;
@@ -24,7 +24,7 @@ public class ShoppingListsActivity extends AppCompatActivity {
         setContentView(R.layout.content_with_menues_activity);
 
         Menues.setupActionBar(this);
-        drawerLayout = Menues.setupDrawerMenu(this, CURRENT);
+        drawerLayout = Menues.createDrawerMenu(this, CURRENT);
 
         // Create the presenter
         shoppingListsPresenter = new ShoppingListsPresenter(

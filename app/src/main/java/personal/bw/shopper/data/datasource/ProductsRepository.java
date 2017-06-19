@@ -1,11 +1,11 @@
-package personal.bw.shopper.data.source;
+package personal.bw.shopper.data.datasource;
 
 import android.content.Context;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
 import personal.bw.shopper.ShopperLog;
 import personal.bw.shopper.data.models.Product;
-import personal.bw.shopper.data.source.local.ShopHelperDatabaseHelper;
+import personal.bw.shopper.data.datasource.local.ShopHelperDatabaseHelper;
 
 import java.sql.SQLException;
 import java.util.List;

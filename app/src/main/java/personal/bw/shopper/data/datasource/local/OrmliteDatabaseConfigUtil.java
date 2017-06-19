@@ -1,4 +1,4 @@
-package personal.bw.shopper.data.source.local;
+package personal.bw.shopper.data.datasource.local;
 
 import com.j256.ormlite.android.apptools.OrmLiteConfigUtil;
 import personal.bw.shopper.data.models.Product;
@@ -8,8 +8,6 @@ import personal.bw.shopper.data.models.ShoppingListProduct;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-
-import static com.j256.ormlite.android.apptools.OrmLiteConfigUtil.writeConfigFile;
 
 
 public class OrmliteDatabaseConfigUtil extends OrmLiteConfigUtil {

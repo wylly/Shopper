@@ -1,9 +1,9 @@
 package personal.bw.shopper.productdetails;
 
 import android.support.annotation.NonNull;
-import personal.bw.shopper.data.builders.ProductBuilder;
+import personal.bw.shopper.data.models.builders.ProductBuilder;
 import personal.bw.shopper.data.models.Product;
-import personal.bw.shopper.data.source.DataSourceDealer;
+import personal.bw.shopper.data.datasource.DataSourceDealer;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

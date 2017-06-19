@@ -2,9 +2,9 @@ package personal.bw.shopper.shoppinglists;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import personal.bw.shopper.data.datasource.DataSourceAPI;
+import personal.bw.shopper.data.datasource.DataSourceDealer;
 import personal.bw.shopper.data.models.ShoppingList;
-import personal.bw.shopper.data.source.DataSourceAPI;
-import personal.bw.shopper.data.source.DataSourceDealer;
 
 import java.util.List;
 

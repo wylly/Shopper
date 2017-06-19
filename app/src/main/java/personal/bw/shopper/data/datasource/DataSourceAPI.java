@@ -1,4 +1,4 @@
-package personal.bw.shopper.data.source;
+package personal.bw.shopper.data.datasource;
 
 import android.support.annotation.NonNull;
 import personal.bw.shopper.data.models.Product;

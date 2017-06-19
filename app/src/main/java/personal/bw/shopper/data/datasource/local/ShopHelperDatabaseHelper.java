@@ -1,4 +1,4 @@
-package personal.bw.shopper.data.source.local;
+package personal.bw.shopper.data.datasource.local;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

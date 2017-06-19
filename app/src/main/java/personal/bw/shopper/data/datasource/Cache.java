@@ -1,4 +1,4 @@
-package personal.bw.shopper.data.source;
+package personal.bw.shopper.data.datasource;
 
 import personal.bw.shopper.data.models.Product;
 import personal.bw.shopper.data.models.ShoppingList;

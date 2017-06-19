@@ -1,12 +1,12 @@
-package personal.bw.shopper.data.source;
+package personal.bw.shopper.data.datasource;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 import personal.bw.shopper.ShopperLog;
 import personal.bw.shopper.data.models.Product;
 import personal.bw.shopper.data.models.ShoppingList;
-import personal.bw.shopper.data.source.DataSourceAPI.*;
-import personal.bw.shopper.data.source.local.ShopHelperDatabaseHelper;
+import personal.bw.shopper.data.datasource.DataSourceAPI.*;
+import personal.bw.shopper.data.datasource.local.ShopHelperDatabaseHelper;
 
 import java.util.List;
 

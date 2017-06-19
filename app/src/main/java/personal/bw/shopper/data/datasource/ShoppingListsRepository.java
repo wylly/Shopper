@@ -1,10 +1,10 @@
-package personal.bw.shopper.data.source;
+package personal.bw.shopper.data.datasource;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 import com.j256.ormlite.stmt.QueryBuilder;
 import personal.bw.shopper.data.models.ShoppingList;
-import personal.bw.shopper.data.source.local.ShopHelperDatabaseHelper;
+import personal.bw.shopper.data.datasource.local.ShopHelperDatabaseHelper;
 
 import java.sql.SQLException;
 import java.util.HashMap;

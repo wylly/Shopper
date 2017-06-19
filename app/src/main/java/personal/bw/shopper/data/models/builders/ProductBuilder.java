@@ -1,4 +1,4 @@
-package personal.bw.shopper.data.builders;
+package personal.bw.shopper.data.models.builders;
 
 import personal.bw.shopper.data.models.Product;
 
