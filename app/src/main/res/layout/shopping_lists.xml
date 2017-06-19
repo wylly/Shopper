@@ -4,56 +4,56 @@
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent">
 
-<RelativeLayout
-        android:id="@+id/listsContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-    <LinearLayout
-            android:id="@+id/listsLL"
+    <RelativeLayout
+            android:id="@+id/listsContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-        <ListView
-                android:id="@+id/shoppingListsList"
+        <LinearLayout
+                android:id="@+id/listsLL"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-    </LinearLayout>
-    <LinearLayout
-            android:id="@+id/noShoppingLists"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-        <ImageView
-                android:id="@+id/noShoppingListsIcon"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_queue_black_24dp" />
-
-        <TextView
-                android:id="@+id/noShoppingListsMain"
+            <ListView
+                    android:id="@+id/shoppingListsList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <LinearLayout
+                android:id="@+id/noShoppingLists"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/no_shoppinglists_all"
-                android:layout_marginBottom="@dimen/list_item_padding"
-                android:layout_marginTop="@dimen/list_item_padding"/>
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
 
-        <TextView
-                android:id="@+id/noShoppingListsAdd"
-                android:layout_width="wrap_content"
-                android:layout_height="28dp"
-                android:layout_gravity="center"
-                android:background="@drawable/touch_feedback"
-                android:gravity="center"
-                android:text="@string/no_shoppinglists_add" />
+            <ImageView
+                    android:id="@+id/noShoppingListsIcon"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_queue_black_24dp"/>
 
-    </LinearLayout>
-</RelativeLayout>
+            <TextView
+                    android:id="@+id/noShoppingListsMain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/no_shoppinglists_all"
+                    android:layout_marginBottom="@dimen/list_item_padding"
+                    android:layout_marginTop="@dimen/list_item_padding"/>
+
+            <TextView
+                    android:id="@+id/noShoppingListsAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="28dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/touch_feedback"
+                    android:gravity="center"
+                    android:text="@string/no_shoppinglists_add"/>
+
+        </LinearLayout>
+    </RelativeLayout>
 </personal.bw.shopper.ScrollAndRefreshLayout>
 

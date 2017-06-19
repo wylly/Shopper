@@ -6,56 +6,59 @@ import personal.bw.shopper.data.models.Product;
 
 import java.util.List;
 
-public interface ShoppingListDetailsContract {
-    interface View extends BaseView<Presenter>{
+public interface ShoppingListDetailsContract
+{
+	interface View extends BaseView<Presenter>
+	{
 
-        void setLoadingIndicator(boolean b);
+		void setLoadingIndicator(boolean b);
 
-        void showProducts(List<Product> products);
+		void showProducts(List<Product> products);
 
-        void showNoProducts();
+		void showNoProducts();
 
-        void showSuccessfullySavedMessage();
+		void showSuccessfullySavedMessage();
 
-        void showProductDeletedToast();
+		void showProductDeletedToast();
 
-        void showProductDeletionError(String info);
+		void showProductDeletionError(String info);
 
-        void showProductDetailsUi(int clickedProduct);
+		void showProductDetailsUi(int clickedProduct);
 
-        void showLoadingProductsError();
+		void showLoadingProductsError();
 
-        boolean isActive();
+		boolean isActive();
 
-        void showProductChecked();
+		void showProductChecked();
 
-        void showProductCheckFailed(String s);
+		void showProductCheckFailed(String s);
 
-        void showProductUnchecked();
+		void showProductUnchecked();
 
-        void showProductUncheckFailed(String s);
+		void showProductUncheckFailed(String s);
 
-        void showShoppingListSavedMessage();
+		void showShoppingListSavedMessage();
 
-        void showUnableToSaveShoppingList();
-    }
+		void showUnableToSaveShoppingList();
+	}
 
-    interface Presenter extends BasePresenter{
+	interface Presenter extends BasePresenter
+	{
 
-        void loadProducts();
+		void loadProducts();
 
-        void deleteProduct(int clickedProduct);
+		void deleteProduct(int clickedProduct);
 
-        void result(int requestCode, int resultCode);
+		void result(int requestCode, int resultCode);
 
-        void markProductChecked(int product);
+		void markProductChecked(int product);
 
-        void markProductUnchecked(int product);
+		void markProductUnchecked(int product);
 
-        CharSequence getShoppingListName();
+		CharSequence getShoppingListName();
 
-        void saveShoppingList();
+		void saveShoppingList();
 
-        void setShoppingListName(String s);
-    }
+		void setShoppingListName(String s);
+	}
 }

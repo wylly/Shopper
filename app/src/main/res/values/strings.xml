@@ -14,8 +14,8 @@
     <string name="no_products_all">You don\'t have any products on the list</string>
     <string name="no_products_add">Add a product to list</string>
     <string name="clicked_shopping_list">CHLICKED_SHOPPING_LIST\\</string>
-    <string name="label_product_name">Product name: </string>
-    <string name="label_product_brand">Product brand: </string>
+    <string name="label_product_name">Product name:</string>
+    <string name="label_product_brand">Product brand:</string>
     <string name="label_product_description">Product description:</string>
     <string name="label_product_amount">Amount of product:</string>
     <string name="save">Save</string>

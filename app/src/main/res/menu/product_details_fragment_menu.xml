@@ -20,5 +20,5 @@
             android:id="@+id/save_product"
             android:title="@string/add"
             android:icon="@drawable/ic_done_black_24dp"
-            app:showAsAction="ifRoom" />
+            app:showAsAction="ifRoom"/>
 </menu>

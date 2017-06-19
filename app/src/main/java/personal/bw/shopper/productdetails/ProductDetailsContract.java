@@ -3,28 +3,31 @@ package personal.bw.shopper.productdetails;
 import personal.bw.shopper.BasePresenter;
 import personal.bw.shopper.BaseView;
 
-public interface ProductDetailsContract {
-     interface View extends BaseView<Presenter>{
+public interface ProductDetailsContract
+{
+	interface View extends BaseView<Presenter>
+	{
 
-         void goToProductsList();
+		void goToProductsList();
 
-         void showProductSavedMessage();
+		void showProductSavedMessage();
 
-         void showProductSaveErrorMessage(String error);
+		void showProductSaveErrorMessage(String error);
 
-         void setName(String name);
+		void setName(String name);
 
-         void setDescription(String description);
+		void setDescription(String description);
 
-         void setBrand(String brand);
+		void setBrand(String brand);
 
-         void setAmount(String amount);
+		void setAmount(String amount);
 
-         boolean isActive();
-     }
+		boolean isActive();
+	}
 
-     interface Presenter extends BasePresenter{
+	interface Presenter extends BasePresenter
+	{
 
-         void saveProduct(String name, String brand, String description, String amount);
-     }
+		void saveProduct(String name, String brand, String description, String amount);
+	}
 }

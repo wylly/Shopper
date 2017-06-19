@@ -24,7 +24,7 @@
                     android:background="?attr/colorPrimary"
                     android:minHeight="?attr/actionBarSize"
                     android:theme="@style/Toolbar"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
         </android.support.design.widget.AppBarLayout>
 
         <android.support.design.widget.CoordinatorLayout
@@ -35,7 +35,7 @@
             <FrameLayout
                     android:id="@+id/contentFrame"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"/>
         </android.support.design.widget.CoordinatorLayout>
 
     </LinearLayout>
@@ -48,6 +48,6 @@
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/drawer_menu_header"
-            app:menu="@menu/drawer_menu_items" />
+            app:menu="@menu/drawer_menu_items"/>
 
 </android.support.v4.widget.DrawerLayout>

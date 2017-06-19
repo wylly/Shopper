@@ -6,37 +6,40 @@ import personal.bw.shopper.data.models.ShoppingList;
 
 import java.util.List;
 
-public interface ShoppingListsContract {
+public interface ShoppingListsContract
+{
 
-    interface View extends BaseView<Presenter> {
+	interface View extends BaseView<Presenter>
+	{
 
-        void showAddShoppingList();
+		void showAddShoppingList();
 
-        void setLoadingIndicator(boolean active);
+		void setLoadingIndicator(boolean active);
 
-        void showShoppingLists(List<ShoppingList> shoppingLists);
+		void showShoppingLists(List<ShoppingList> shoppingLists);
 
-        void showSuccessfullySavedMessage();
+		void showSuccessfullySavedMessage();
 
-        void showShoppingListDetailsUi(String taskId);
+		void showShoppingListDetailsUi(String taskId);
 
-        void showLoadingShoppingListsError();
+		void showLoadingShoppingListsError();
 
-        boolean isActive();
+		boolean isActive();
 
-        void showNoShoppingLists();
+		void showNoShoppingLists();
 
-        void showShoppingListDeletedToast();
+		void showShoppingListDeletedToast();
 
-        void showShoppingListDeletionError(String info);
-    }
+		void showShoppingListDeletionError(String info);
+	}
 
-    interface Presenter extends BasePresenter {
+	interface Presenter extends BasePresenter
+	{
 
-        void loadShoppingLists();
+		void loadShoppingLists();
 
-        void result(int requestCode, int resultCode);
+		void result(int requestCode, int resultCode);
 
-        void deleteShoppingList(ShoppingList clickedShoppingList);
-    }
+		void deleteShoppingList(ShoppingList clickedShoppingList);
+	}
 }
