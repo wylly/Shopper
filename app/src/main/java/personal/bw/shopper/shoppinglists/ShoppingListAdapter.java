@@ -3,6 +3,7 @@ package personal.bw.shopper.shoppinglists;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
@@ -15,7 +16,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ShoppingListAdapter extends BaseAdapter
 {
-
 	private List<ShoppingList> shoppingLists;
 	private ShoppingListListener itemListener;
 	private Context context;
@@ -57,36 +57,15 @@ public class ShoppingListAdapter extends BaseAdapter
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent)
+	public View getView(int position, View view, ViewGroup parent)
 	{
-		View view = convertView;
-
-		if (view == null)
-		{
-			LayoutInflater layoutInflater = LayoutInflater.from(context);
-			view = layoutInflater.inflate(R.layout.shopping_lists_list_item, null);
-		}
+		view = initViewIfNull(view);
 
 		final ShoppingList shoppingList = getItem(position);
+		populateList(view, shoppingList);
 
-		if (shoppingList != null)
-		{
-			TextView listName = (TextView) view.findViewById(R.id.label_lists_name);
-			TextView listDate = (TextView) view.findViewById(R.id.label_lists_date);
-
-			if (listName != null)
-			{
-				listName.setText(shoppingList.getName());
-			}
-
-			if (listDate != null)
-			{
-				listDate.setText(shoppingList.getFormattedDate());
-			}
-		}
 		View shoppingListViewText = view.findViewById(R.id.shopping_lists_list_item);
-		View shoppingListDeleteIcon = view.findViewById(R.id.shopping_lists_delete_icon);
-		shoppingListViewText.setOnClickListener(new View.OnClickListener()
+		shoppingListViewText.setOnClickListener(new OnClickListener()
 		{
 			@Override
 			public void onClick(View view)
@@ -95,7 +74,8 @@ public class ShoppingListAdapter extends BaseAdapter
 			}
 		});
 
-		shoppingListDeleteIcon.setOnClickListener(new View.OnClickListener()
+		View shoppingListDeleteIcon = view.findViewById(R.id.shopping_lists_delete_icon);
+		shoppingListDeleteIcon.setOnClickListener(new OnClickListener()
 		{
 			@Override
 			public void onClick(View view)
@@ -104,6 +84,43 @@ public class ShoppingListAdapter extends BaseAdapter
 			}
 		});
 
+		return view;
+	}
+
+	private void populateList(View view, ShoppingList shoppingList)
+	{
+		if (shoppingList != null)
+		{
+			initListNameIfNull(view, shoppingList);
+			initListDateIfNull(view, R.id.label_lists_date, shoppingList.getFormattedDate());
+		}
+	}
+
+	private void initListDateIfNull(View view, int label_lists_date, String formattedDate)
+	{
+		TextView listDate = (TextView) view.findViewById(label_lists_date);
+		if (listDate != null)
+		{
+			listDate.setText(formattedDate);
+		}
+	}
+
+	private void initListNameIfNull(View view, ShoppingList shoppingList)
+	{
+		TextView listName = (TextView) view.findViewById(R.id.label_lists_name);
+		if (listName != null)
+		{
+			listName.setText(shoppingList.getName());
+		}
+	}
+
+	private View initViewIfNull(View view)
+	{
+		if (view == null)
+		{
+			LayoutInflater layoutInflater = LayoutInflater.from(context);
+			view = layoutInflater.inflate(R.layout.shopping_lists_list_item, null);
+		}
 		return view;
 	}
 

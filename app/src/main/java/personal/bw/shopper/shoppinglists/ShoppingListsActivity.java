@@ -28,7 +28,6 @@ public class ShoppingListsActivity extends AppCompatActivity
 		Menues.setupActionBar(this);
 		drawerLayout = Menues.createDrawerMenu(this, CURRENT);
 
-		// Create the presenter
 		shoppingListsPresenter = new ShoppingListsPresenter(
 				setupShoppingListsFragment(),
 				DataSourceDealer.getINSTANCE(getApplicationContext())
