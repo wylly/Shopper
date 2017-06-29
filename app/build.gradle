@@ -26,5 +26,7 @@ dependencies {
     compile "com.google.guava:guava:$rootProject.guavaVersion"
     compile "com.j256.ormlite:ormlite-core:$rootProject.ormLiteCoreVersion"
     compile "com.j256.ormlite:ormlite-android:$rootProject.ormLiteAndroidVersion"
+    compile 'com.jakewharton:butterknife:8.6.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
     testCompile 'junit:junit:4.12'
 }
