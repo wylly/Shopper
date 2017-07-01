@@ -7,42 +7,23 @@ import personal.bw.shopper.data.models.builders.ProductBuilder;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-
-public class ProductDetailsPresenter implements ProductDetailsContract.Presenter
+public class NewProductDetailsPresenter implements ProductDetailsContract.Presenter
 {
 	private final ProductDetailsContract.View productDetailsView;
 	private final DataSourceDealer repository;
-	private int productId;
-	private boolean isChecked;
 
-	public ProductDetailsPresenter(
+	public NewProductDetailsPresenter(
 			@NonNull ProductDetailsContract.View productDetailsFragment,
-			@NonNull DataSourceDealer repository,
-			int productId)
+			@NonNull DataSourceDealer repository)
 	{
-		this.productDetailsView = checkNotNull(productDetailsFragment, "productDetailsFragment cannot be null");
+		this.productDetailsView = checkNotNull(productDetailsFragment, "NewProductDetailsPresenter cannot be null");
 		this.repository = repository;
 		this.productDetailsView.setPresenter(this);
-		this.productId = productId;
 	}
 
 	@Override
 	public void start()
 	{
-		populateProduct();
-	}
-
-	private void populateProduct()
-	{
-		Product product = repository.getProductFromCache(productId);
-		if (productDetailsView.isActive())
-		{
-			productDetailsView.setName(product.getName());
-			productDetailsView.setBrand(product.getBrand());
-			productDetailsView.setDescription(product.getDescription());
-			productDetailsView.setAmount(product.getAmount());
-			isChecked = product.getChecked();
-		}
 	}
 
 	@Override
@@ -52,9 +33,9 @@ public class ProductDetailsPresenter implements ProductDetailsContract.Presenter
 				.withBrand(brand)
 				.withDescription(description)
 				.withAmount(amount)
-				.withChecked(isChecked)
+				.withChecked(false)
 				.build();
-		repository.updateProductInCache(productId, product);
+		repository.addProductCache(product);
 		productDetailsView.goToProductsList();
 	}
 }

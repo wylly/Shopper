@@ -7,18 +7,20 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import personal.bw.shopper.ActivitiesEnum;
-import personal.bw.shopper.ActivityUtils;
-import personal.bw.shopper.Menues;
 import personal.bw.shopper.R;
 import personal.bw.shopper.data.datasource.DataSourceDealer;
 import personal.bw.shopper.shoppinglistdetails.ShoppingListDetailsFragment;
+
+import static personal.bw.shopper.ActivityUtils.addFragmentToActivity;
+import static personal.bw.shopper.Menues.createDrawerMenu;
+import static personal.bw.shopper.Menues.setupActionBar;
 
 public class ProductDetailsActivity extends AppCompatActivity
 {
 	private final static ActivitiesEnum CURRENT = ActivitiesEnum.NONE;
 	private DrawerLayout drawerLayout;
-	private ProductDetailsPresenter presenter;
-	ProductDetailsFragment productDetailsFragment;
+	private ProductDetailsContract.Presenter presenter;
+	private ProductDetailsFragment productDetailsFragment;
 
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -26,8 +28,8 @@ public class ProductDetailsActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.content_with_menues_activity);
 
-		drawerLayout = Menues.createDrawerMenu(this, CURRENT);
-		Menues.setupActionBar(this);
+		drawerLayout = createDrawerMenu(this, CURRENT);
+		setupActionBar(this);
 
 		switch (getExtraCommand())
 		{
@@ -36,20 +38,24 @@ public class ProductDetailsActivity extends AppCompatActivity
 				presenter = new ProductDetailsPresenter(
 						setupProductDetailsFragment(),
 						DataSourceDealer.getINSTANCE(getApplicationContext()),
-						getIntent().getIntExtra(ShoppingListDetailsFragment.CLICKED_PRODUCT, 0)
+						retrieveEditedItemId()
 				);
 				break;
 			}
 			case NEW_PRODUCT:
 			{
-				presenter = new ProductDetailsPresenter(
+				presenter = new NewProductDetailsPresenter(
 						setupProductDetailsFragment(),
-						DataSourceDealer.getINSTANCE(getApplicationContext()),
-						-1
+						DataSourceDealer.getINSTANCE(getApplicationContext())
 				);
 				break;
 			}
 		}
+	}
+
+	private int retrieveEditedItemId()
+	{
+		return getIntent().getIntExtra(ShoppingListDetailsFragment.CLICKED_PRODUCT, 0);
 	}
 
 	private ShoppingListDetailsFragment.Action getExtraCommand()
@@ -62,10 +68,8 @@ public class ProductDetailsActivity extends AppCompatActivity
 		productDetailsFragment = (ProductDetailsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
 		if (productDetailsFragment == null)
 		{
-			// Create the fragment
 			productDetailsFragment = new ProductDetailsFragment();
-			ActivityUtils.addFragmentToActivity(
-					getSupportFragmentManager(), productDetailsFragment, R.id.contentFrame);
+			addFragmentToActivity(getSupportFragmentManager(), productDetailsFragment, R.id.contentFrame);
 		}
 		return productDetailsFragment;
 	}

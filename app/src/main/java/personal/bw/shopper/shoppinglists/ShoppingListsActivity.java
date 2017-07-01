@@ -41,8 +41,7 @@ public class ShoppingListsActivity extends AppCompatActivity
 		{
 			// Create the fragment
 			shoppingListsFragment = ShoppingListsFragment.newInstance();
-			ActivityUtils.addFragmentToActivity(
-					getSupportFragmentManager(), shoppingListsFragment, R.id.contentFrame);
+			ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), shoppingListsFragment, R.id.contentFrame);
 		}
 		return shoppingListsFragment;
 	}
