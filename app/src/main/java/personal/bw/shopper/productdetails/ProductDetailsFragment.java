@@ -1,7 +1,6 @@
 package personal.bw.shopper.productdetails;
 
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +11,7 @@ import android.widget.EditText;
 import butterknife.BindView;
 import personal.bw.shopper.R;
 
+import static android.app.Activity.RESULT_OK;
 import static butterknife.ButterKnife.bind;
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -79,7 +79,7 @@ public class ProductDetailsFragment extends Fragment implements ProductDetailsCo
 	@Override
 	public void goToProductsList()
 	{
-		getActivity().setResult(Activity.RESULT_OK);
+		getActivity().setResult(RESULT_OK);
 		getActivity().finish();
 	}
 

@@ -7,56 +7,50 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import butterknife.BindView;
 import personal.bw.shopper.R;
 import personal.bw.shopper.data.models.Product;
 
-import java.util.LinkedList;
 import java.util.List;
+
+import static butterknife.ButterKnife.bind;
 
 public class ProductsListAdapter extends BaseAdapter
 {
 	private List<Product> products;
 	private ProductListener itemListener;
 	private Context context;
-	private List<Product> sortedProducts;
+
+	@BindView(R.id.label_product_name)
+	TextView productName;
+
+	@BindView(R.id.label_product_brand)
+	TextView productBrand;
+
+	@BindView(R.id.label_product_amount)
+	TextView productAmount;
+
+	@BindView(R.id.products_list_item)
+	View productViewText;
+
+	@BindView(R.id.product_delete_icon)
+	View productDeleteIcon;
+
+	@BindView(R.id.checkbox_products_list)
+	CheckBox productCheckBox;
 
 	public ProductsListAdapter(List<Product> products, ProductListener itemListener, Context context)
 	{
 		this.products = products;
 		this.itemListener = itemListener;
 		this.context = context;
-		sortedProducts = new LinkedList<>();
 	}
-
-	public void sortProductsDependingOnCheckState()
-	{
-		for (Product p : products)
-		{
-			if (p.getChecked().equals(false))
-			{
-				sortedProducts.add(p);
-			}
-		}
-		for (Product p : products)
-		{
-			if (p.getChecked().equals(true))
-			{
-				sortedProducts.add(p);
-			}
-		}
-	}
-
 
 	public void replaceData(List<Product> products)
 	{
-		this.setList(products);
-		this.notifyDataSetChanged();
-	}
-
-	private void setList(List<Product> products)
-	{
 		this.products.clear();
 		this.products.addAll(products);
+		this.notifyDataSetChanged();
 	}
 
 	@Override
@@ -86,35 +80,34 @@ public class ProductsListAdapter extends BaseAdapter
 		{
 			LayoutInflater layoutInflater = LayoutInflater.from(context);
 			view = layoutInflater.inflate(R.layout.product_list_item, null);
+			bind(this, view);
 		}
 
 		final Product product = getItem(position);
 
 		if (product != null)
 		{
-			TextView productName = (TextView) view.findViewById(R.id.label_product_name);
-			TextView productBrand = (TextView) view.findViewById(R.id.label_product_brand);
-			TextView productAmount = (TextView) view.findViewById(R.id.label_product_amount);
-
 			if (productName != null)
 			{
 				productName.setText(product.getName());
+				productName.invalidate();
 			}
 
 			if (productBrand != null)
 			{
 				productBrand.setText(product.getBrand());
+				productBrand.invalidate();
 			}
 
 			if (productAmount != null)
 			{
 				productAmount.setText(product.getAmount());
+				productAmount.invalidate();
 			}
 		}
-		View productViewText = view.findViewById(R.id.products_list_item);
-		View productDeleteIcon = view.findViewById(R.id.product_delete_icon);
-		CheckBox productCheckBox = (CheckBox) view.findViewById(R.id.checkbox_products_list);
+
 		productCheckBox.setChecked(product.getChecked());
+
 		productViewText.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
@@ -143,6 +136,8 @@ public class ProductsListAdapter extends BaseAdapter
 			}
 		});
 
+		view.invalidate();
+		notifyDataSetChanged();
 		return view;
 	}
 

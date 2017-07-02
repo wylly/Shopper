@@ -85,7 +85,8 @@ public class ShoppingListsPresenter implements ShoppingListsContract.Presenter
 		if (shoppingLists.isEmpty())
 		{
 			shoppingListsView.showNoShoppingLists();
-		} else
+		}
+		else
 		{
 			shoppingListsView.showShoppingLists(shoppingLists);
 		}

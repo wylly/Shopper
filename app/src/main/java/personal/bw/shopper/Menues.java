@@ -50,7 +50,7 @@ public class Menues
 				switch (menuItem.getItemId())
 				{
 					case R.id.shopping_lists_list_navigation_menu_item:
-						if (!current.equals(ActivitiesEnum.LISTS))
+						if (!current.equals(ActivitiesEnum.SHOPPING_LISTS))
 						{
 
 						}

@@ -44,7 +44,8 @@ public class ProductsForShoppingListRepository
 			if (shoppingList.getId() != null)
 			{
 				callback.onProductsForShoppingListLoaded(lookupProductsForShoppingList(shoppingList));
-			} else
+			}
+			else
 			{
 				callback.onProductsForShoppingListLoaded(Lists.<Product>newLinkedList());
 			}

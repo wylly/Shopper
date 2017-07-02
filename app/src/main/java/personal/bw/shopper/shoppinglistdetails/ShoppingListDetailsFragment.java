@@ -7,11 +7,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.view.*;
 import android.widget.*;
+import butterknife.BindView;
+import butterknife.OnClick;
 import personal.bw.shopper.R;
 import personal.bw.shopper.ScrollAndRefreshLayout;
 import personal.bw.shopper.data.models.Product;
@@ -20,28 +21,42 @@ import personal.bw.shopper.productdetails.ProductDetailsActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.support.design.widget.Snackbar.LENGTH_LONG;
+import static android.support.v4.content.ContextCompat.getColor;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+import static android.widget.Toast.LENGTH_SHORT;
+import static butterknife.ButterKnife.bind;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Collections.sort;
+import static personal.bw.shopper.shoppinglistdetails.ShoppingListDetailsFragment.Action.NEW_PRODUCT;
 
 public class ShoppingListDetailsFragment extends Fragment implements ShoppingListDetailsContract.View
 {
-
 	public static final String CLICKED_PRODUCT = "CLICKED PRODUCT";
 	private ShoppingListDetailsContract.Presenter presenter;
 	private ProductsListAdapter listAdapter;
-	private LinearLayout productsView;
-	private View noProductsView;
-	private ImageView noProductsIcon;
-	private TextView noProductsMainView;
-	private TextView noProductsAddView;
-	private EditText shoppingListName;
+
+	@BindView(R.id.productsLL)
+	LinearLayout productsView;
+
+	@BindView(R.id.noProducts)
+	View noProductsView;
+
+	@BindView(R.id.noProductsAdd)
+	TextView noProductsAddView;
+
+	@BindView(R.id.input_shopping_list_name)
+	EditText shoppingListName;
+
+	@BindView(R.id.productsList)
+	ListView listView;
+
+	@BindView(R.id.products_refresh_layout)
+	ScrollAndRefreshLayout scrollAndRefreshLayout;
 
 	public ShoppingListDetailsFragment()
 	{
-	}
-
-	public static ShoppingListDetailsFragment newInstance()
-	{
-		return new ShoppingListDetailsFragment();
 	}
 
 	@Override
@@ -56,6 +71,7 @@ public class ShoppingListDetailsFragment extends Fragment implements ShoppingLis
 	{
 		super.onResume();
 		presenter.start();
+		listView.setAdapter(listAdapter);
 	}
 
 	@Override
@@ -64,28 +80,35 @@ public class ShoppingListDetailsFragment extends Fragment implements ShoppingLis
 		this.presenter = checkNotNull(presenter);
 	}
 
+	@Nullable
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+	{
+		View root = inflater.inflate(R.layout.shopping_list_details, container, false);
+		bind(this, root);
+		listView.setAdapter(listAdapter);
+		shoppingListName.setText(presenter.getShoppingListName());
+
+		createScrollAndRefreshLayout(root);
+
+		setHasOptionsMenu(true);
+
+		return root;
+	}
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
 		presenter.result(requestCode, resultCode);
 	}
 
-	@Nullable
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-							 Bundle savedInstanceState)
+	private void createScrollAndRefreshLayout(View root)
 	{
-		View root = inflater.inflate(R.layout.shopping_list_details, container, false);
-
-		ListView listView = (ListView) root.findViewById(R.id.productsList);
-		listView.setAdapter(listAdapter);
-		productsView = (LinearLayout) root.findViewById(R.id.productsLL);
-		this.shoppingListName = ((EditText) root.findViewById(R.id.input_shopping_list_name));
-		this.shoppingListName.setText(presenter.getShoppingListName());
-		setUpNoProductsViews(root);
-
-		final ScrollAndRefreshLayout scrollAndRefreshLayout = setupProgressIndicator(root);
-
+		scrollAndRefreshLayout.setColorSchemeColors(
+				getColor(getActivity(), R.color.colorPrimary),
+				getColor(getActivity(), R.color.colorAccent),
+				getColor(getActivity(), R.color.colorPrimaryDark)
+		);
 		scrollAndRefreshLayout.setScrollUpChild(listView);
 		scrollAndRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
 		{
@@ -93,38 +116,6 @@ public class ShoppingListDetailsFragment extends Fragment implements ShoppingLis
 			public void onRefresh()
 			{
 				presenter.loadProducts();
-			}
-		});
-
-		setHasOptionsMenu(true);
-
-		return root;
-	}
-
-	private ScrollAndRefreshLayout setupProgressIndicator(View root)
-	{
-		final ScrollAndRefreshLayout scrollAndRefreshLayout =
-				(ScrollAndRefreshLayout) root.findViewById(R.id.products_refresh_layout);
-		scrollAndRefreshLayout.setColorSchemeColors(
-				ContextCompat.getColor(getActivity(), R.color.colorPrimary),
-				ContextCompat.getColor(getActivity(), R.color.colorAccent),
-				ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark)
-		);
-		return scrollAndRefreshLayout;
-	}
-
-	private void setUpNoProductsViews(View root)
-	{
-		noProductsView = root.findViewById(R.id.noProducts);
-		noProductsIcon = (ImageView) root.findViewById(R.id.noProductsIcon);
-		noProductsMainView = (TextView) root.findViewById(R.id.noProductsMain);
-		noProductsAddView = (TextView) root.findViewById(R.id.noProductsAdd);
-		noProductsView.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				startAddProductActivity();
 			}
 		});
 	}
@@ -141,7 +132,7 @@ public class ShoppingListDetailsFragment extends Fragment implements ShoppingLis
 			}
 			case R.id.save_shopping_list:
 			{
-				presenter.setShoppingListName(this.shoppingListName.getText().toString());
+				presenter.setShoppingListName(shoppingListName.getText().toString());
 				presenter.saveShoppingList();
 				getActivity().finish();
 				break;
@@ -150,10 +141,11 @@ public class ShoppingListDetailsFragment extends Fragment implements ShoppingLis
 		return true;
 	}
 
-	private void startAddProductActivity()
+	@OnClick(R.id.noProducts)
+	public void startAddProductActivity()
 	{
 		Intent intent = new Intent(getContext(), ProductDetailsActivity.class);
-		intent.putExtra(getString(R.string.intent_action), Action.NEW_PRODUCT);
+		intent.putExtra(getString(R.string.intent_action), NEW_PRODUCT);
 		startActivity(intent);
 	}
 
@@ -166,39 +158,35 @@ public class ShoppingListDetailsFragment extends Fragment implements ShoppingLis
 	@Override
 	public void setLoadingIndicator(final boolean active)
 	{
-
 		if (getView() == null)
 		{
 			return;
 		}
-		final SwipeRefreshLayout srl =
-				(SwipeRefreshLayout) getView().findViewById(R.id.products_refresh_layout);
-
 		// Make sure setRefreshing() is called after the layout is done with everything else.
-		srl.post(new Runnable()
+		scrollAndRefreshLayout.post(new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				srl.setRefreshing(active);
+				scrollAndRefreshLayout.setRefreshing(active);
 			}
 		});
 	}
 
 	@Override
-	public void showProducts(List<Product> shoppingLists)
+	public void showProducts(List<Product> products)
 	{
-		listAdapter.replaceData(shoppingLists);
-		productsView.setVisibility(View.VISIBLE);
-		noProductsView.setVisibility(View.GONE);
+		refreshProductList(products);
+		productsView.setVisibility(VISIBLE);
+		noProductsView.setVisibility(GONE);
 	}
 
 	@Override
 	public void showNoProducts()
 	{
-		productsView.setVisibility(View.GONE);
-		noProductsView.setVisibility(View.VISIBLE);
-		noProductsAddView.setVisibility(View.VISIBLE);
+		productsView.setVisibility(GONE);
+		noProductsView.setVisibility(VISIBLE);
+		noProductsAddView.setVisibility(VISIBLE);
 	}
 
 	@Override
@@ -210,17 +198,17 @@ public class ShoppingListDetailsFragment extends Fragment implements ShoppingLis
 	@Override
 	public void showProductDeletedToast()
 	{
-		Toast.makeText(getContext(), R.string.shopping_list_deletion_successfull, Toast.LENGTH_SHORT).show();
+		Toast.makeText(getContext(), R.string.shopping_list_deletion_successfull, LENGTH_SHORT).show();
 	}
 
 	@Override
 	public void showProductDeletionError(String info)
 	{
-		Toast.makeText(getContext(), info, Toast.LENGTH_SHORT).show();
+		Toast.makeText(getContext(), info, LENGTH_SHORT).show();
 	}
 
 	@Override
-	public void showProductDetailsUi(int clickedProduct)
+	public void startProductDetailsActivity(int clickedProduct)
 	{
 		Intent intent = new Intent(getContext(), ProductDetailsActivity.class);
 		intent.putExtra(getString(R.string.intent_action), Action.EDIT_PRODUCT);
@@ -236,7 +224,7 @@ public class ShoppingListDetailsFragment extends Fragment implements ShoppingLis
 
 	private void showMessage(String message)
 	{
-		Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).show();
+		Snackbar.make(getView(), message, LENGTH_LONG).show();
 	}
 
 	private void showMessageShort(String message)
@@ -249,51 +237,6 @@ public class ShoppingListDetailsFragment extends Fragment implements ShoppingLis
 	{
 		return isAdded();
 	}
-
-	ProductsListAdapter.ProductListener mItemListener = new ProductsListAdapter.ProductListener()
-	{
-		@Override
-		public void onProductClick(int clickedProductId)
-		{
-			showProductDetailsUi(clickedProductId);
-		}
-
-		@Override
-		public void onDeleteIconClick(final int clickedProductId)
-		{
-			new AlertDialog.Builder(getActivity())
-					.setTitle("Deleting product")
-					.setMessage("This will completely remove product from this Shopper application")
-					.setPositiveButton("Ok", new DialogInterface.OnClickListener()
-					{
-						@Override
-						public void onClick(DialogInterface dialog, int which)
-						{
-							presenter.deleteProduct(clickedProductId);
-						}
-					}).setNegativeButton("Cancel", new DialogInterface.OnClickListener()
-			{
-				@Override
-				public void onClick(DialogInterface dialog, int which)
-				{
-					//Nothig happens
-				}
-			}).create()
-					.show();
-		}
-
-		@Override
-		public void onProductCheck(int clickedProductId)
-		{
-			presenter.markProductChecked(clickedProductId);
-		}
-
-		@Override
-		public void onProductUncheck(int clickedProductId)
-		{
-			presenter.markProductUnchecked(clickedProductId);
-		}
-	};
 
 	@Override
 	public void showProductChecked()
@@ -336,4 +279,58 @@ public class ShoppingListDetailsFragment extends Fragment implements ShoppingLis
 		NEW_PRODUCT,
 		EDIT_PRODUCT
 	}
+
+	private void refreshProductList(List<Product> products)
+	{
+		sort(products, new CheckedAndNamedProductsComparator());
+		listAdapter = new ProductsListAdapter(products, mItemListener, getContext());
+		listView.setAdapter(listAdapter);
+	}
+
+	private ProductsListAdapter.ProductListener mItemListener = new ProductsListAdapter.ProductListener()
+	{
+		@Override
+		public void onProductClick(int clickedProductId)
+		{
+			startProductDetailsActivity(clickedProductId);
+		}
+
+		@Override
+		public void onDeleteIconClick(final int clickedProductId)
+		{
+			new AlertDialog.Builder(getActivity())
+					.setTitle("Deleting product")
+					.setMessage("This will completely remove product from this Shopper application")
+					.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int which)
+						{
+							presenter.deleteProduct(clickedProductId);
+						}
+					}).setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialog, int which)
+				{
+					//Nothig happens
+				}
+			}).create()
+					.show();
+		}
+
+		@Override
+		public void onProductCheck(int clickedProductId)
+		{
+			presenter.markProductChecked(clickedProductId);
+			presenter.loadProducts();
+		}
+
+		@Override
+		public void onProductUncheck(int clickedProductId)
+		{
+			presenter.markProductUnchecked(clickedProductId);
+			presenter.loadProducts();
+		}
+	};
 }

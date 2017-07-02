@@ -17,13 +17,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ShoppingListDetailsPresenter implements ShoppingListDetailsContract.Presenter
 {
-
 	private final DataSourceDealer repository;
 	private final ShoppingListDetailsContract.View shoppingListsDetailsView;
 	private final ShoppingList shoppingList;
 	private final StringResourcesRepository stringResourcesRepository;
 
-	public ShoppingListDetailsPresenter(@NonNull ShoppingListDetailsContract.View shoppingListsDetailsView, @NonNull DataSourceDealer shoppingListsRepository, @NonNull StringResourcesRepository stringResourcesRepository, Intent intent)
+	public ShoppingListDetailsPresenter(@NonNull ShoppingListDetailsContract.View shoppingListsDetailsView,
+										@NonNull DataSourceDealer shoppingListsRepository,
+										@NonNull StringResourcesRepository stringResourcesRepository,
+										Intent intent)
 	{
 		this.repository = checkNotNull(shoppingListsRepository, "shoppingListDetailsFragment cannot be null");
 		this.shoppingListsDetailsView = shoppingListsDetailsView;
@@ -97,7 +99,8 @@ public class ShoppingListDetailsPresenter implements ShoppingListDetailsContract
 		if (products.isEmpty())
 		{
 			shoppingListsDetailsView.showNoProducts();
-		} else
+		}
+		else
 		{
 			shoppingListsDetailsView.showProducts(products);
 		}
@@ -113,8 +116,7 @@ public class ShoppingListDetailsPresenter implements ShoppingListDetailsContract
 	@Override
 	public void result(int requestCode, int resultCode)
 	{
-		// If a task was successfully added, show snackbar
-		if (/*AddEditTaskActivity.REQUEST_ADD_TASK == requestCode && */Activity.RESULT_OK == resultCode)
+		if (Activity.RESULT_OK == resultCode)
 		{
 			shoppingListsDetailsView.showSuccessfullySavedMessage();
 		}

@@ -9,12 +9,12 @@ import java.util.Date;
  */
 public class ProductBuilder
 {
-	private String name;
-	private String description;
-	private String brand;
-	private String amount;
-	private Date bestBefore;
-	private String barCode;
+	private String name = "";
+	private String description = "";
+	private String brand = "";
+	private String amount = "";
+	private Date bestBefore = new Date();
+	private String barCode = "";
 	private boolean isChecked;
 
 	public ProductBuilder(String name)

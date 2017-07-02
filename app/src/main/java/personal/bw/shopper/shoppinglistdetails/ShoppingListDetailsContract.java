@@ -23,7 +23,7 @@ public interface ShoppingListDetailsContract
 
 		void showProductDeletionError(String info);
 
-		void showProductDetailsUi(int clickedProduct);
+		void startProductDetailsActivity(int clickedProduct);
 
 		void showLoadingProductsError();
 

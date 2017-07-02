@@ -61,7 +61,8 @@ public class ProductsRepository
 			{
 				ShopperLog.i("Created: " + product.toString());
 				callback.onProductPut(true);
-			} else
+			}
+			else
 			{
 				ShopperLog.i("Updated: " + product.toString());
 				callback.onProductPut(false);

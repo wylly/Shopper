@@ -40,11 +40,6 @@ public class ShoppingListsFragment extends Fragment implements ShoppingListsCont
 		// Requires empty public constructor
 	}
 
-	public static ShoppingListsFragment newInstance()
-	{
-		return new ShoppingListsFragment();
-	}
-
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
