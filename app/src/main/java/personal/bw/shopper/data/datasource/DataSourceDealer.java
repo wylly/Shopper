@@ -4,11 +4,12 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import personal.bw.shopper.ShopperLog;
 import personal.bw.shopper.data.datasource.DataSourceAPI.*;
-import personal.bw.shopper.data.datasource.local.ShopHelperDatabaseHelper;
 import personal.bw.shopper.data.models.Product;
 import personal.bw.shopper.data.models.ShoppingList;
 
 import java.util.List;
+
+import static personal.bw.shopper.data.datasource.local.ShopHelperDatabaseHelper.HOUSEHOLD_LIST_ID;
 
 public class DataSourceDealer
 {
@@ -160,11 +161,16 @@ public class DataSourceDealer
 
 	public ShoppingList getHouseRepository()
 	{
-		return getShoppingList(ShopHelperDatabaseHelper.HOUSEHOLD_LIST_ID);
+		return getShoppingList(HOUSEHOLD_LIST_ID);
 	}
 
 	private ShoppingList getShoppingList(long shoppingListId)
 	{
 		return dataBase.readShoppingList(shoppingListId);
+	}
+
+	public void moveToTrash(int clickedProduct)
+	{
+		//todo
 	}
 }

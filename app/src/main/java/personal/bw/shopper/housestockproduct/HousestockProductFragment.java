@@ -1,4 +1,4 @@
-package personal.bw.shopper.shoppinglistdetails;
+package personal.bw.shopper.housestockproduct;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,6 +17,8 @@ import personal.bw.shopper.R;
 import personal.bw.shopper.ScrollAndRefreshLayout;
 import personal.bw.shopper.data.models.Product;
 import personal.bw.shopper.productdetails.ProductDetailsActivity;
+import personal.bw.shopper.productlist.housestock.DateProductsComparator;
+import personal.bw.shopper.productlist.housestock.HousestockProductsListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,13 +31,13 @@ import static android.widget.Toast.LENGTH_SHORT;
 import static butterknife.ButterKnife.bind;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.Collections.sort;
-import static personal.bw.shopper.shoppinglistdetails.ShoppingListDetailsFragment.Action.NEW_PRODUCT;
+import static personal.bw.shopper.productlist.BaseProductListFragment.Action.NEW_PRODUCT;
 
-public class ShoppingListDetailsFragment extends Fragment implements ShoppingListDetailsContract.View
+public class HousestockProductFragment extends Fragment implements HousestockProductContract.View
 {
 	public static final String CLICKED_PRODUCT = "CLICKED PRODUCT";
-	private ShoppingListDetailsContract.Presenter presenter;
-	private ProductsListAdapter listAdapter;
+	private HousestockProductContract.Presenter presenter;
+	private HousestockProductsListAdapter listAdapter;
 
 	@BindView(R.id.productsLL)
 	LinearLayout productsView;
@@ -55,7 +57,7 @@ public class ShoppingListDetailsFragment extends Fragment implements ShoppingLis
 	@BindView(R.id.products_refresh_layout)
 	ScrollAndRefreshLayout scrollAndRefreshLayout;
 
-	public ShoppingListDetailsFragment()
+	public HousestockProductFragment()
 	{
 	}
 
@@ -63,7 +65,7 @@ public class ShoppingListDetailsFragment extends Fragment implements ShoppingLis
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		listAdapter = new ProductsListAdapter(new ArrayList<Product>(), mItemListener, getContext());
+		listAdapter = new HousestockProductsListAdapter(new ArrayList<Product>(), mItemListener, getContext());
 	}
 
 	@Override
@@ -75,7 +77,7 @@ public class ShoppingListDetailsFragment extends Fragment implements ShoppingLis
 	}
 
 	@Override
-	public void setPresenter(@NonNull ShoppingListDetailsContract.Presenter presenter)
+	public void setPresenter(@NonNull HousestockProductContract.Presenter presenter)
 	{
 		this.presenter = checkNotNull(presenter);
 	}
@@ -282,12 +284,12 @@ public class ShoppingListDetailsFragment extends Fragment implements ShoppingLis
 
 	private void refreshProductList(List<Product> products)
 	{
-		sort(products, new CheckedAndNamedProductsComparator());
-		listAdapter = new ProductsListAdapter(products, mItemListener, getContext());
+		sort(products, new DateProductsComparator());
+		listAdapter = new HousestockProductsListAdapter(products, mItemListener, getContext());
 		listView.setAdapter(listAdapter);
 	}
 
-	private ProductsListAdapter.ProductListener mItemListener = new ProductsListAdapter.ProductListener()
+	private HousestockProductsListAdapter.ProductListener mItemListener = new HousestockProductsListAdapter.ProductListener()
 	{
 		@Override
 		public void onProductClick(int clickedProductId)
@@ -320,17 +322,27 @@ public class ShoppingListDetailsFragment extends Fragment implements ShoppingLis
 		}
 
 		@Override
-		public void onProductCheck(int clickedProductId)
+		public void onTrashClick(final int clickedProduct)
 		{
-			presenter.markProductChecked(clickedProductId);
-			presenter.loadProducts();
-		}
-
-		@Override
-		public void onProductUncheck(int clickedProductId)
-		{
-			presenter.markProductUnchecked(clickedProductId);
-			presenter.loadProducts();
+			new AlertDialog.Builder(getActivity())
+					.setTitle("Moving product to trash list")
+					.setMessage("This will move product to trash list")
+					.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int which)
+						{
+							presenter.moveToTrash(clickedProduct);
+						}
+					}).setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialog, int which)
+				{
+					//Nothig happens
+				}
+			}).create()
+					.show();
 		}
 	};
 }

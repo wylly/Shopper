@@ -8,10 +8,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import personal.bw.shopper.shoppinglistdetails.ShoppingListDetailsActivity;
-import personal.bw.shopper.shoppinglists.ShoppingListsFragment;
-
-import static personal.bw.shopper.shoppinglists.ShoppingListsFragment.COMMAND;
+import personal.bw.shopper.productlist.housestock.HouseStockActivity;
+import personal.bw.shopper.shoppinglists.ShoppingListsActivity;
 
 
 public class Menues
@@ -52,7 +50,11 @@ public class Menues
 					case R.id.shopping_lists_list_navigation_menu_item:
 						if (!current.equals(ActivitiesEnum.SHOPPING_LISTS))
 						{
-
+							Intent intent =
+									new Intent(context, ShoppingListsActivity.class);
+							intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+									| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+							context.startActivity(intent);
 						}
 						break;
 					case R.id.scan_barcode_navigation_menu_item:
@@ -70,10 +72,9 @@ public class Menues
 						if (!current.equals(ActivitiesEnum.HOUSESTOCK))
 						{
 							Intent intent =
-									new Intent(context, ShoppingListDetailsActivity.class);
+									new Intent(context, HouseStockActivity.class);
 							intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
 									| Intent.FLAG_ACTIVITY_CLEAR_TASK);
-							intent.putExtra(COMMAND, ShoppingListsFragment.Command.HOUSEHOLD_LIST);
 							context.startActivity(intent);
 						}
 //

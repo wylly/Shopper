@@ -1,4 +1,4 @@
-package personal.bw.shopper.shoppinglistdetails;
+package personal.bw.shopper.housestockproduct;
 
 import personal.bw.shopper.BasePresenter;
 import personal.bw.shopper.BaseView;
@@ -6,7 +6,7 @@ import personal.bw.shopper.data.models.Product;
 
 import java.util.List;
 
-public interface ShoppingListDetailsContract
+public interface HousestockProductContract
 {
 	interface View extends BaseView<Presenter>
 	{
@@ -60,5 +60,7 @@ public interface ShoppingListDetailsContract
 		void saveShoppingList();
 
 		void setShoppingListName(String s);
+
+		void moveToTrash(int id);
 	}
 }

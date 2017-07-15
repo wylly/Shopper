@@ -1,4 +1,4 @@
-package personal.bw.shopper.shoppinglistdetails;
+package personal.bw.shopper.productlist.shoppinglist;
 
 import personal.bw.shopper.data.models.Product;
 

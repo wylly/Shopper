@@ -15,7 +15,8 @@ import android.widget.*;
 import personal.bw.shopper.R;
 import personal.bw.shopper.ScrollAndRefreshLayout;
 import personal.bw.shopper.data.models.ShoppingList;
-import personal.bw.shopper.shoppinglistdetails.ShoppingListDetailsActivity;
+import personal.bw.shopper.productlist.shoppinglist.existingshoppinglist.ExistingShoppingListDetailsActivity;
+import personal.bw.shopper.productlist.shoppinglist.newshoppinglist.NewShoppingListDetailsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,16 +120,15 @@ public class ShoppingListsFragment extends Fragment implements ShoppingListsCont
 			@Override
 			public void onClick(View v)
 			{
-				showAddShoppingList();
+				startAddShoppingListActivity();
 			}
 		});
 	}
 
 	@Override
-	public void showAddShoppingList()
+	public void startAddShoppingListActivity()
 	{
-		Intent intent = new Intent(getContext(), ShoppingListDetailsActivity.class);
-		intent.putExtra(COMMAND, Command.NEW);
+		Intent intent = new Intent(getContext(), NewShoppingListDetailsActivity.class);
 		startActivity(intent);
 	}
 
@@ -138,7 +138,7 @@ public class ShoppingListsFragment extends Fragment implements ShoppingListsCont
 		switch (item.getItemId())
 		{
 			case R.id.add_new_shopping_list:
-				showAddShoppingList();
+				startAddShoppingListActivity();
 				break;
 		}
 		return true;
@@ -238,8 +238,7 @@ public class ShoppingListsFragment extends Fragment implements ShoppingListsCont
 		@Override
 		public void onShoppingListClick(ShoppingList clickedShoppingList)
 		{
-			Intent intent = new Intent(getContext(), ShoppingListDetailsActivity.class);
-			intent.putExtra(COMMAND, Command.EDIT);
+			Intent intent = new Intent(getContext(), ExistingShoppingListDetailsActivity.class);
 			intent.putExtra(CLICKED_SHOPPING_LIST, clickedShoppingList);
 			startActivity(intent);
 		}

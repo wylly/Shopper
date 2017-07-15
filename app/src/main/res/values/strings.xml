@@ -23,4 +23,9 @@
     <string name="label_shopping_list_name">Name:</string>
     <string name="intent_action">Action</string>
     <string name="new_product">New product</string>
+    <string name="label_housestock">Housestock</string>
+    <string name="no_products_add_to_housestock">Scan products to add them</string>
+    <string name="move_to_housestock">Move to housestock</string>
+    <string name="save_product">Save product</string>
+    <string name="label_product_due_date">Due date:</string>
 </resources>

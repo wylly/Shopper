@@ -1,63 +1,39 @@
-package personal.bw.shopper.shoppinglistdetails;
+package personal.bw.shopper.productlist;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import personal.bw.shopper.R;
 import personal.bw.shopper.data.datasource.DataSourceAPI;
 import personal.bw.shopper.data.datasource.DataSourceDealer;
 import personal.bw.shopper.data.datasource.StringResourcesRepository;
 import personal.bw.shopper.data.models.Product;
 import personal.bw.shopper.data.models.ShoppingList;
-import personal.bw.shopper.shoppinglists.ShoppingListsFragment;
 
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class ShoppingListDetailsPresenter implements ShoppingListDetailsContract.Presenter
+public abstract class BaseShoppingListDetailsPresenter implements ShoppingListDetailsContract.Presenter
 {
 	private final DataSourceDealer repository;
 	private final ShoppingListDetailsContract.View shoppingListsDetailsView;
 	private final ShoppingList shoppingList;
 	private final StringResourcesRepository stringResourcesRepository;
 
-	public ShoppingListDetailsPresenter(@NonNull ShoppingListDetailsContract.View shoppingListsDetailsView,
-										@NonNull DataSourceDealer shoppingListsRepository,
-										@NonNull StringResourcesRepository stringResourcesRepository,
-										Intent intent)
+	public BaseShoppingListDetailsPresenter(@NonNull ShoppingListDetailsContract.View shoppingListsDetailsView,
+											@NonNull DataSourceDealer shoppingListsRepository,
+											@NonNull StringResourcesRepository stringResourcesRepository,
+											Intent intent)
 	{
 		this.repository = checkNotNull(shoppingListsRepository, "shoppingListDetailsFragment cannot be null");
 		this.shoppingListsDetailsView = shoppingListsDetailsView;
 		this.shoppingListsDetailsView.setPresenter(this);
 		this.stringResourcesRepository = stringResourcesRepository;
-		this.shoppingList = getShoppingList(getExtraCommand(intent), intent);
+		this.shoppingList = getShoppingList(intent);
 	}
 
-	private ShoppingList getShoppingList(ShoppingListsFragment.Command command, Intent intent)
-	{
-		switch (command)
-		{
-			case EDIT:
-			{
-				return (ShoppingList) intent.getSerializableExtra(ShoppingListsFragment.CLICKED_SHOPPING_LIST);
-			}
-			case NEW:
-			{
-				return new ShoppingList(stringResourcesRepository.getString(R.string.new_shopping_list));
-			}
-			case HOUSEHOLD_LIST:
-			{
-				repository.getHouseRepository();
-			}
-		}
-		return new ShoppingList(stringResourcesRepository.getString(R.string.new_shopping_list));
-	}
+	public abstract ShoppingList getShoppingList(Intent intent);
 
-	private ShoppingListsFragment.Command getExtraCommand(Intent intent)
-	{
-		return (ShoppingListsFragment.Command) intent.getSerializableExtra(ShoppingListsFragment.COMMAND);
-	}
 
 	@Override
 	public void start()
@@ -114,6 +90,11 @@ public class ShoppingListDetailsPresenter implements ShoppingListDetailsContract
 	}
 
 	@Override
+	public void moveToTrash(int clickedProduct){
+		repository.moveToTrash(clickedProduct);
+	}
+
+	@Override
 	public void result(int requestCode, int resultCode)
 	{
 		if (Activity.RESULT_OK == resultCode)
@@ -163,5 +144,15 @@ public class ShoppingListDetailsPresenter implements ShoppingListDetailsContract
 	public CharSequence getShoppingListName()
 	{
 		return shoppingList.getName();
+	}
+
+	public DataSourceDealer getRepository()
+	{
+		return repository;
+	}
+
+	public StringResourcesRepository getStringResourcesRepository()
+	{
+		return stringResourcesRepository;
 	}
 }

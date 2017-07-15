@@ -12,7 +12,7 @@ public interface ShoppingListsContract
 	interface View extends BaseView<Presenter>
 	{
 
-		void showAddShoppingList();
+		void startAddShoppingListActivity();
 
 		void setLoadingIndicator(boolean active);
 

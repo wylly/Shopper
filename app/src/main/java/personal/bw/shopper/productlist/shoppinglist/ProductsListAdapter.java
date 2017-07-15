@@ -1,4 +1,4 @@
-package personal.bw.shopper.shoppinglistdetails;
+package personal.bw.shopper.productlist.shoppinglist;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -107,7 +107,6 @@ public class ProductsListAdapter extends BaseAdapter
 		}
 
 		productCheckBox.setChecked(product.getChecked());
-
 		productViewText.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
@@ -116,7 +115,6 @@ public class ProductsListAdapter extends BaseAdapter
 				itemListener.onProductClick(position);
 			}
 		});
-
 		productDeleteIcon.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
@@ -125,7 +123,6 @@ public class ProductsListAdapter extends BaseAdapter
 				itemListener.onDeleteIconClick(position);
 			}
 		});
-
 		productCheckBox.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
@@ -143,12 +140,14 @@ public class ProductsListAdapter extends BaseAdapter
 
 	public interface ProductListener
 	{
-		void onProductClick(int clickedProduct);
+		public void onProductClick(int clickedProduct);
 
-		void onDeleteIconClick(int clickedProduct);
+		public void onDeleteIconClick(int clickedProduct);
 
-		void onProductCheck(int clickedProduct);
+		public void onMoveToHousestock(int clickedProduct);
 
-		void onProductUncheck(int clickedProduct);
+		public void onProductCheck(int clickedProduct);
+
+		public void onProductUncheck(int clickedProduct);
 	}
 }

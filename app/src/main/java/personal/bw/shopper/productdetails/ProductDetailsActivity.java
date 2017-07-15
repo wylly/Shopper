@@ -7,10 +7,10 @@ import personal.bw.shopper.ActivitiesEnum;
 import personal.bw.shopper.BaseActivity;
 import personal.bw.shopper.R;
 import personal.bw.shopper.data.datasource.DataSourceDealer;
-import personal.bw.shopper.shoppinglistdetails.ShoppingListDetailsFragment;
+import personal.bw.shopper.productlist.BaseProductListFragment;
 
 import static personal.bw.shopper.ActivitiesEnum.PRODUCT_DETAILS;
-import static personal.bw.shopper.shoppinglistdetails.ShoppingListDetailsFragment.CLICKED_PRODUCT;
+import static personal.bw.shopper.productlist.BaseProductListFragment.CLICKED_PRODUCT;
 
 public class ProductDetailsActivity extends BaseActivity
 {
@@ -40,9 +40,9 @@ public class ProductDetailsActivity extends BaseActivity
 		}
 	}
 
-	private ShoppingListDetailsFragment.Action getExtraCommand()
+	private BaseProductListFragment.Action getExtraCommand()
 	{
-		return (ShoppingListDetailsFragment.Action) getIntent().getSerializableExtra(getString(R.string.intent_action));
+		return (BaseProductListFragment.Action) getIntent().getSerializableExtra(getString(R.string.intent_action));
 	}
 
 	private int retrieveEditedItemId()

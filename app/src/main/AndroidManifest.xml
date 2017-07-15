@@ -16,7 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".shoppinglistdetails.ShoppingListDetailsActivity"/>
+        <activity android:name=".productlist.shoppinglist.existingshoppinglist.ExistingShoppingListDetailsActivity"/>
+        <activity android:name=".productlist.shoppinglist.newshoppinglist.NewShoppingListDetailsActivity"/>
+        <activity android:name=".productlist.housestock.HouseStockActivity"/>
         <activity android:name=".productdetails.ProductDetailsActivity"/>
     </application>
 
