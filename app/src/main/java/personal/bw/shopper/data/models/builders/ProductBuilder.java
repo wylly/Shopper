@@ -2,13 +2,12 @@ package personal.bw.shopper.data.models.builders;
 
 import personal.bw.shopper.data.models.Product;
 
+import java.text.ParseException;
 import java.util.Date;
 
-/**
- * Created by barto on 08.09.2016.
- */
 public class ProductBuilder
 {
+	private long id = -1;
 	private String name = "";
 	private String description = "";
 	private String brand = "";
@@ -22,6 +21,10 @@ public class ProductBuilder
 		this.name = name;
 	}
 
+	public ProductBuilder withId(int id){
+		this.id = id;
+		return this;
+	}
 	public ProductBuilder withDescription(String description)
 	{
 		this.description = description;
@@ -46,6 +49,13 @@ public class ProductBuilder
 		return this;
 	}
 
+	public ProductBuilder withBestBefore(String dateString) throws ParseException
+	{
+		Date date = Product.DATE_FORMAT.parse(dateString);
+		this.bestBefore = date;
+		return this;
+	}
+
 	public ProductBuilder withBarCode(String barCode)
 	{
 		this.barCode = barCode;
@@ -61,6 +71,7 @@ public class ProductBuilder
 	public Product build()
 	{
 		Product product = new Product(this.name);
+		product.setId(this.id);
 		product.setDescription(this.description);
 		product.setAmount(this.amount);
 		product.setBrand(this.brand);

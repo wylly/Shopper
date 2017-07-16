@@ -22,6 +22,6 @@ public class HousestockProductsPresenter extends BaseShoppingListDetailsPresente
 	@Override
 	public ShoppingList getShoppingList(Intent intent)
 	{
-		return getRepository().getHouseRepository();
+		return getRepository().getHousestockList();
 	}
 }

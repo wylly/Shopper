@@ -16,7 +16,7 @@ public class NewProductDetailsPresenter implements ProductDetailsContract.Presen
 			@NonNull ProductDetailsContract.View productDetailsFragment,
 			@NonNull DataSourceDealer repository)
 	{
-		this.productDetailsView = checkNotNull(productDetailsFragment, "NewProductDetailsPresenter cannot be null");
+		this.productDetailsView = checkNotNull(productDetailsFragment, "NewHousestockProductDetailsPresenter cannot be null");
 		this.repository = repository;
 		this.productDetailsView.setPresenter(this);
 	}

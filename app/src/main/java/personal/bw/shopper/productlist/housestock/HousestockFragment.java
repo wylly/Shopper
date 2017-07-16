@@ -1,6 +1,8 @@
 package personal.bw.shopper.productlist.housestock;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,9 +46,27 @@ public class HousestockFragment extends BaseProductListFragment
 		};
 	}
 
-	private void moveToTrash(int clickedProduct)
+	private void moveToTrash(final int clickedProduct)
 	{
-
+		new AlertDialog.Builder(getActivity())
+				.setTitle("Moving product to trash list")
+				.setMessage("This will move product to trash list")
+				.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+				{
+					@Override
+					public void onClick(DialogInterface dialog, int which)
+					{
+						getPresenter().moveToTrash(clickedProduct);
+					}
+				}).setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int which)
+			{
+				//Nothig happens
+			}
+		}).create()
+				.show();
 	}
 
 	@Override

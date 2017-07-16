@@ -5,14 +5,14 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.io.Serializable;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static java.text.DateFormat.MEDIUM;
 
 @DatabaseTable(tableName = "product")
 public class Product implements Serializable
 {
-
-	private final static DateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+	public final static DateFormat DATE_FORMAT = DateFormat.getDateInstance(MEDIUM);
 	public final static String ID_FIELD_NAME = "id";
 
 	@DatabaseField(generatedId = true, columnName = ID_FIELD_NAME)
@@ -47,6 +47,11 @@ public class Product implements Serializable
 	public Product(String name)
 	{
 		this.name = name;
+	}
+
+	public void setId(Long id)
+	{
+		this.id = id;
 	}
 
 	public Long getId()

@@ -43,7 +43,6 @@ public class DataSourceDealer
 			public void onShoppingListPut()
 			{
 				ShopperLog.i("Shopping list saving: created shoppingList");
-
 			}
 
 			@Override
@@ -84,6 +83,26 @@ public class DataSourceDealer
 			{
 				ShopperLog.e("Create or update all products success");
 				callback.onShoppingListSaveFailure();
+			}
+		});
+	}
+
+	public void saveHousestockProduct(@NonNull Product product, @NonNull final PutProductCallback callback)
+	{
+		dataBase.createOrUpdateProduct(product, callback);
+		ShoppingList housestock = getHousestockList();
+		dataBase.createShoppingListProduct(housestock, product, new CreateShoppingListProductCallback()
+		{
+			@Override
+			public void onCreateSuccess()
+			{
+				callback.onProductPut(false);
+			}
+
+			@Override
+			public void onCreateFailure()
+			{
+				callback.onPuttingError();
 			}
 		});
 	}
@@ -159,7 +178,7 @@ public class DataSourceDealer
 		cache.updateProduct(productId, product);
 	}
 
-	public ShoppingList getHouseRepository()
+	public ShoppingList getHousestockList()
 	{
 		return getShoppingList(HOUSEHOLD_LIST_ID);
 	}
