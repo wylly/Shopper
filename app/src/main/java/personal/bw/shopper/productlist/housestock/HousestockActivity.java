@@ -11,7 +11,7 @@ import personal.bw.shopper.productlist.ShoppingListDetailsContract;
 
 import static personal.bw.shopper.ActivitiesEnum.HOUSESTOCK;
 
-public class HouseStockActivity extends BaseActivity
+public class HousestockActivity extends BaseActivity
 {
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -35,5 +35,6 @@ public class HouseStockActivity extends BaseActivity
 	{
 		return HOUSESTOCK;
 	}
+
 
 }

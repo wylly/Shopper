@@ -235,7 +235,8 @@ public abstract class BaseProductListFragment extends Fragment implements Shoppi
 	public enum Action
 	{
 		NEW_PRODUCT,
-		EDIT_PRODUCT;
+		EDIT_PRODUCT,
+		CONVERT_PRODUCT
 	}
 
 	@Override

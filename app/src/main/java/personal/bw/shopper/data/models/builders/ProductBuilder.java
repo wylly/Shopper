@@ -1,5 +1,6 @@
 package personal.bw.shopper.data.models.builders;
 
+import personal.bw.shopper.CalendarConverter;
 import personal.bw.shopper.data.models.Product;
 
 import java.text.ParseException;
@@ -7,6 +8,8 @@ import java.util.Date;
 
 public class ProductBuilder
 {
+	private CalendarConverter calendarConverter = new CalendarConverter();
+
 	private long id = -1;
 	private String name = "";
 	private String description = "";
@@ -51,8 +54,8 @@ public class ProductBuilder
 
 	public ProductBuilder withBestBefore(String dateString) throws ParseException
 	{
-		Date date = Product.DATE_FORMAT.parse(dateString);
-		this.bestBefore = date;
+
+		this.bestBefore = calendarConverter.toDate(dateString);
 		return this;
 	}
 

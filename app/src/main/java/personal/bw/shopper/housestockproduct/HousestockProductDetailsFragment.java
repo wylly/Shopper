@@ -8,16 +8,21 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.*;
 import android.widget.EditText;
+import android.widget.TextView;
 import butterknife.BindView;
+import butterknife.OnClick;
+import personal.bw.shopper.CalendarConverter;
+import personal.bw.shopper.DatePickerDialogUpdater;
+import personal.bw.shopper.DatePickerFragment;
 import personal.bw.shopper.R;
 
 import static android.app.Activity.RESULT_OK;
 import static butterknife.ButterKnife.bind;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class HousestockProductDetailsFragment extends Fragment implements ProductDetailsContract.View
+public class HousestockProductDetailsFragment extends Fragment implements HousestockProductDetailsContract.View, DatePickerDialogUpdater
 {
-	private ProductDetailsContract.Presenter presenter;
+	private HousestockProductDetailsContract.Presenter presenter;
 
 	@BindView(R.id.input_product_name)
 	EditText name;
@@ -31,31 +36,47 @@ public class HousestockProductDetailsFragment extends Fragment implements Produc
 	@BindView(R.id.input_product_amount)
 	EditText amount;
 
-	@BindView(R.id.input_product_date)
-	EditText dueDate;
+	@BindView(R.id.input_product_due_date)
+	TextView dueDate;
 
 	private View rootView;
+	private CalendarConverter calendarConverter = new CalendarConverter();
 
 	@Override
 	public void onResume()
 	{
 		super.onResume();
-		presenter.start();
 	}
 
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
 	{
-		rootView = inflater.inflate(R.layout.product_details, container, false);
+		rootView = inflater.inflate(R.layout.product_details_housestock, container, false);
 		bind(this, rootView);
 		setHasOptionsMenu(true);
 		setRetainInstance(true);
+		presenter.start();
+
 		return rootView;
 	}
 
+	@OnClick(R.id.input_product_due_date)
+	public void showTimePickerDialog(View v)
+	{
+		DatePickerFragment newFragment = new DatePickerFragment();
+		Bundle bundle = new Bundle();
+		String date = dueDate.getText().toString();
+		bundle.putInt("day", calendarConverter.toDay(date));
+		bundle.putInt("month", calendarConverter.toMonth(date));
+		bundle.putInt("year", calendarConverter.toYear(date));
+		newFragment.setArguments(bundle);
+		newFragment.setDatePickerDialogUpdater(this);
+		newFragment.show(getFragmentManager(), "timePicker");
+	}
+
 	@Override
-	public void setPresenter(@NonNull ProductDetailsContract.Presenter presenter)
+	public void setPresenter(@NonNull HousestockProductDetailsContract.Presenter presenter)
 	{
 		this.presenter = checkNotNull(presenter);
 	}
@@ -76,8 +97,17 @@ public class HousestockProductDetailsFragment extends Fragment implements Produc
 				);
 				break;
 			}
+			case R.id.scan_barcode_product:
+			{
+				startScanBarCodeActivity();
+			}
 		}
 		return true;
+	}
+
+	private void startScanBarCodeActivity()
+	{
+
 	}
 
 	@Override
@@ -91,7 +121,7 @@ public class HousestockProductDetailsFragment extends Fragment implements Produc
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
 	{
 		menu.clear();
-		inflater.inflate(R.menu.product_details_fragment_menu, menu);
+		inflater.inflate(R.menu.product_details_housestock_fragment_menu, menu);
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 
@@ -151,5 +181,11 @@ public class HousestockProductDetailsFragment extends Fragment implements Produc
 	public boolean isActive()
 	{
 		return isAdded();
+	}
+
+	@Override
+	public void updateDate(int day, int month, int year)
+	{
+		this.dueDate.setText(calendarConverter.toString(day, month, year));
 	}
 }

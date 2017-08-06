@@ -85,6 +85,7 @@ public class DataSourceDealer
 				callback.onShoppingListSaveFailure();
 			}
 		});
+		callback.onShoppingListSave();
 	}
 
 	public void saveHousestockProduct(@NonNull Product product, @NonNull final PutProductCallback callback)

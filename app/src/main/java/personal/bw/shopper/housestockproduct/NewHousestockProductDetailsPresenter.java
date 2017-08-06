@@ -10,13 +10,13 @@ import java.text.ParseException;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class NewHousestockProductDetailsPresenter implements ProductDetailsContract.Presenter
+public class NewHousestockProductDetailsPresenter implements HousestockProductDetailsContract.Presenter
 {
-	private final ProductDetailsContract.View productDetailsView;
+	private final HousestockProductDetailsContract.View productDetailsView;
 	private final DataSourceDealer repository;
 
 	public NewHousestockProductDetailsPresenter(
-			@NonNull ProductDetailsContract.View productDetailsFragment,
+			@NonNull HousestockProductDetailsContract.View productDetailsFragment,
 			@NonNull DataSourceDealer repository)
 	{
 		this.productDetailsView = checkNotNull(productDetailsFragment, "NewHousestockProductDetailsPresenter cannot be null");
@@ -30,12 +30,27 @@ public class NewHousestockProductDetailsPresenter implements ProductDetailsContr
 	}
 
 	@Override
-	public void saveProduct(String name, String brand, String description,String amount, String dueDate)
+	public void saveProduct(String name, String brand, String description, String amount, String dueDate)
 	{
 		try
 		{
-			Product product = makeProduct(name, brand, description,amount, dueDate);
-			saveProduct(product);
+			Product product = makeProduct(name, brand, description, amount, dueDate);
+			repository.addProductCache(product);
+			repository.saveShoppingList(new DataSourceAPI.SaveShoppingListCallback()
+			{
+				@Override
+				public void onShoppingListSave()
+				{
+					productDetailsView.showProductSavedMessage();
+					productDetailsView.goToProductsList();
+				}
+
+				@Override
+				public void onShoppingListSaveFailure()
+				{
+					productDetailsView.showProductSaveErrorMessage("Unable to update house stock list");
+				}
+			});
 		} catch (ParseException e)
 		{
 			productDetailsView.showProductSaveErrorMessage("Could not save product, date parsing error");

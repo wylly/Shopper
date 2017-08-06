@@ -12,7 +12,7 @@ import personal.bw.shopper.productlist.BaseProductListFragment;
 import static personal.bw.shopper.ActivitiesEnum.PRODUCT_DETAILS;
 import static personal.bw.shopper.productlist.BaseProductListFragment.CLICKED_PRODUCT;
 
-public class ProductDetailsActivity extends BaseActivity
+public class HousestockProductDetailsActivity extends BaseActivity
 {
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -23,7 +23,16 @@ public class ProductDetailsActivity extends BaseActivity
 			case EDIT_PRODUCT:
 			{
 				new EditHousestockProductDetailsPresenter(
-						(ProductDetailsContract.View) setupViewFragment(),
+						(HousestockProductDetailsContract.View) setupViewFragment(),
+						DataSourceDealer.getINSTANCE(getApplicationContext()),
+						retrieveEditedItemId()
+				);
+				break;
+			}
+			case CONVERT_PRODUCT:
+			{
+				new ConvertProductToHousestockDetailsPresenter(
+						(HousestockProductDetailsContract.View) setupViewFragment(),
 						DataSourceDealer.getINSTANCE(getApplicationContext()),
 						retrieveEditedItemId()
 				);
@@ -32,7 +41,7 @@ public class ProductDetailsActivity extends BaseActivity
 			case NEW_PRODUCT:
 			{
 				new NewHousestockProductDetailsPresenter(
-						(ProductDetailsContract.View) setupViewFragment(),
+						(HousestockProductDetailsContract.View) setupViewFragment(),
 						DataSourceDealer.getINSTANCE(getApplicationContext())
 				);
 				break;

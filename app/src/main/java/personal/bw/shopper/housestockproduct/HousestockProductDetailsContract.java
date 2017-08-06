@@ -3,7 +3,7 @@ package personal.bw.shopper.housestockproduct;
 import personal.bw.shopper.BasePresenter;
 import personal.bw.shopper.BaseView;
 
-public interface ProductDetailsContract
+public interface HousestockProductDetailsContract
 {
 	interface View extends BaseView<Presenter>
 	{

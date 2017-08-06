@@ -1,21 +1,19 @@
 package personal.bw.shopper;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import personal.bw.shopper.productlist.housestock.HouseStockActivity;
+import personal.bw.shopper.productlist.housestock.HousestockActivity;
 import personal.bw.shopper.shoppinglists.ShoppingListsActivity;
 
 
 public class Menues
 {
 
-	public static void setupActionBar(AppCompatActivity parent)
+	public static void setupActionBar(BaseActivity parent)
 	{
 		Toolbar toolbar = (Toolbar) parent.findViewById(R.id.toolbar);
 		parent.setSupportActionBar(toolbar);
@@ -24,7 +22,7 @@ public class Menues
 		ab.setDisplayHomeAsUpEnabled(true);
 	}
 
-	public static DrawerLayout createDrawerMenu(AppCompatActivity parent, ActivitiesEnum current)
+	public static DrawerLayout createDrawerMenu(BaseActivity parent, ActivitiesEnum current)
 	{
 
 		DrawerLayout drawerLayout = (DrawerLayout) parent.findViewById(R.id.drawer_layout);
@@ -32,13 +30,13 @@ public class Menues
 		NavigationView navigationView = (NavigationView) drawerLayout.findViewById(R.id.drawer_menu);
 		if (navigationView != null)
 		{
-			navigationView.setNavigationItemSelectedListener(getListener(current, drawerLayout, parent.getBaseContext()));
+			navigationView.setNavigationItemSelectedListener(getListener(current, drawerLayout, parent));
 		}
 		return drawerLayout;
 	}
 
 
-	private static NavigationView.OnNavigationItemSelectedListener getListener(final ActivitiesEnum current, final DrawerLayout mDrawerLayout, final Context context)
+	private static NavigationView.OnNavigationItemSelectedListener getListener(final ActivitiesEnum current, final DrawerLayout mDrawerLayout, final BaseActivity parent)
 	{
 		return new NavigationView.OnNavigationItemSelectedListener()
 		{
@@ -51,10 +49,10 @@ public class Menues
 						if (!current.equals(ActivitiesEnum.SHOPPING_LISTS))
 						{
 							Intent intent =
-									new Intent(context, ShoppingListsActivity.class);
+									new Intent(parent.getBaseContext(), ShoppingListsActivity.class);
 							intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
 									| Intent.FLAG_ACTIVITY_CLEAR_TASK);
-							context.startActivity(intent);
+							parent.getBaseContext().startActivity(intent);
 						}
 						break;
 					case R.id.scan_barcode_navigation_menu_item:
@@ -72,10 +70,10 @@ public class Menues
 						if (!current.equals(ActivitiesEnum.HOUSESTOCK))
 						{
 							Intent intent =
-									new Intent(context, HouseStockActivity.class);
+									new Intent(parent, HousestockActivity.class);
 							intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
 									| Intent.FLAG_ACTIVITY_CLEAR_TASK);
-							context.startActivity(intent);
+							parent.startActivity(intent);
 						}
 //
 						break;
@@ -83,7 +81,7 @@ public class Menues
 					case R.id.trash_list_navigation_menu_item:
 						if (!current.equals(ActivitiesEnum.TRASHBIN))
 						{
-//                                    Intent intent =
+//							Intent intent =
 //                                        new Intent(TasksActivity.this, StatisticsActivity.class);
 //                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
 //                                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);

@@ -4,15 +4,11 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.io.Serializable;
-import java.text.DateFormat;
 import java.util.Date;
-
-import static java.text.DateFormat.MEDIUM;
 
 @DatabaseTable(tableName = "product")
 public class Product implements Serializable
 {
-	public final static DateFormat DATE_FORMAT = DateFormat.getDateInstance(MEDIUM);
 	public final static String ID_FIELD_NAME = "id";
 
 	@DatabaseField(generatedId = true, columnName = ID_FIELD_NAME)
@@ -117,11 +113,6 @@ public class Product implements Serializable
 	public void setBarCode(String barCode)
 	{
 		this.barCode = barCode;
-	}
-
-	public String getFormattedDate()
-	{
-		return DATE_FORMAT.format(bestBefore);
 	}
 
 	public Boolean getChecked()

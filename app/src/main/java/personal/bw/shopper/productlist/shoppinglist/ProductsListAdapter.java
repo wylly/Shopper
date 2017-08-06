@@ -36,6 +36,9 @@ public class ProductsListAdapter extends BaseAdapter
 	@BindView(R.id.product_delete_icon)
 	View productDeleteIcon;
 
+	@BindView(R.id.move_to_housestock_product)
+	View productMoveToHousestock;
+
 	@BindView(R.id.checkbox_products_list)
 	CheckBox productCheckBox;
 
@@ -130,6 +133,14 @@ public class ProductsListAdapter extends BaseAdapter
 			{
 				if (((CheckBox) view).isChecked()) itemListener.onProductCheck(position);
 				else itemListener.onProductUncheck(position);
+			}
+		});
+		productMoveToHousestock.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				itemListener.onMoveToHousestock(position);
 			}
 		});
 

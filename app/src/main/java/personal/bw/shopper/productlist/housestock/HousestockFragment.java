@@ -3,24 +3,49 @@ package personal.bw.shopper.productlist.housestock;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import personal.bw.shopper.R;
 import personal.bw.shopper.data.models.Product;
-import personal.bw.shopper.productdetails.ProductDetailsActivity;
+import personal.bw.shopper.housestockproduct.HousestockProductDetailsActivity;
 import personal.bw.shopper.productlist.BaseProductListFragment;
-import personal.bw.shopper.productlist.shoppinglist.CheckedAndNamedProductsComparator;
 
 import java.util.List;
 
 import static butterknife.ButterKnife.bind;
 import static butterknife.ButterKnife.findById;
 import static java.util.Collections.sort;
+import static personal.bw.shopper.productlist.BaseProductListFragment.Action.NEW_PRODUCT;
 
 public class HousestockFragment extends BaseProductListFragment
 {
 	private HousestockProductsListAdapter.ProductListener productListListener = makeProductListener();
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+	{
+		inflater.inflate(R.menu.housestock_list_menu, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case R.id.add_new_housestock_item:
+			{
+				startNewHousestockProductActivity();
+				break;
+			}
+		}
+		return true;
+	}
+
+	private void startNewHousestockProductActivity()
+	{
+		Intent intent = new Intent(getContext(), HousestockProductDetailsActivity.class);
+		intent.putExtra(getString(R.string.intent_action), NEW_PRODUCT);
+		startActivity(intent);
+	}
 
 	private HousestockProductsListAdapter.ProductListener makeProductListener()
 	{
@@ -85,7 +110,7 @@ public class HousestockFragment extends BaseProductListFragment
 	@Override
 	protected void refreshProductList(List<Product> products)
 	{
-		sort(products, new CheckedAndNamedProductsComparator());
+		sort(products, new DateProductsComparator());
 		listAdapter = new HousestockProductsListAdapter(products, productListListener, getContext());
 		listView.setAdapter(listAdapter);
 	}
@@ -93,7 +118,7 @@ public class HousestockFragment extends BaseProductListFragment
 	@Override
 	public void startProductDetailsActivity(int clickedProduct)
 	{
-		Intent intent = new Intent(getContext(), ProductDetailsActivity.class);
+		Intent intent = new Intent(getContext(), HousestockProductDetailsActivity.class);
 		intent.putExtra(getString(R.string.intent_action), Action.EDIT_PRODUCT);
 		intent.putExtra(CLICKED_PRODUCT, clickedProduct);
 		startActivity(intent);

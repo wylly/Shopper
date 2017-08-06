@@ -155,4 +155,9 @@ public abstract class BaseShoppingListDetailsPresenter implements ShoppingListDe
 	{
 		return stringResourcesRepository;
 	}
+
+	public ShoppingListDetailsContract.View getShoppingListsDetailsView()
+	{
+		return shoppingListsDetailsView;
+	}
 }

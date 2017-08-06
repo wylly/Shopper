@@ -1,6 +1,7 @@
 package personal.bw.shopper.housestockproduct;
 
 import android.support.annotation.NonNull;
+import personal.bw.shopper.CalendarConverter;
 import personal.bw.shopper.data.datasource.DataSourceAPI;
 import personal.bw.shopper.data.datasource.DataSourceDealer;
 import personal.bw.shopper.data.models.Product;
@@ -11,14 +12,15 @@ import java.text.ParseException;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 
-public class ConvertProductToHousestockDetailsPresenter implements ProductDetailsContract.Presenter
+public class ConvertProductToHousestockDetailsPresenter implements HousestockProductDetailsContract.Presenter
 {
-	private final ProductDetailsContract.View productDetailsView;
+	private final HousestockProductDetailsContract.View productDetailsView;
 	private final DataSourceDealer repository;
+	private CalendarConverter calendarConverter = new CalendarConverter();
 	private int productId;
 
 	public ConvertProductToHousestockDetailsPresenter(
-			@NonNull ProductDetailsContract.View productDetailsFragment,
+			@NonNull HousestockProductDetailsContract.View productDetailsFragment,
 			@NonNull DataSourceDealer repository,
 			int productId)
 	{
@@ -42,7 +44,7 @@ public class ConvertProductToHousestockDetailsPresenter implements ProductDetail
 			productDetailsView.setName(product.getName());
 			productDetailsView.setBrand(product.getBrand());
 			productDetailsView.setDescription(product.getDescription());
-			productDetailsView.setDueDate(product.getFormattedDate());
+			productDetailsView.setDueDate(calendarConverter.toString(product.getBestBefore()));
 		}
 	}
 

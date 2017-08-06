@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import butterknife.BindView;
+import personal.bw.shopper.CalendarConverter;
 import personal.bw.shopper.R;
 import personal.bw.shopper.data.models.Product;
 
@@ -16,6 +17,7 @@ import static butterknife.ButterKnife.bind;
 
 public class HousestockProductsListAdapter extends BaseAdapter
 {
+	private CalendarConverter calendarConverter = new CalendarConverter();
 	private List<Product> products;
 	private ProductListener itemListener;
 	private Context context;
@@ -100,7 +102,7 @@ public class HousestockProductsListAdapter extends BaseAdapter
 
 			if (productDate != null)
 			{
-				productDate.setText(product.getFormattedDate());
+				productDate.setText(calendarConverter.toString(product.getBestBefore()));
 				productDate.invalidate();
 			}
 		}

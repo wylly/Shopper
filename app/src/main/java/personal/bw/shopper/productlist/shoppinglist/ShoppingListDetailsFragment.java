@@ -8,6 +8,7 @@ import android.widget.EditText;
 import butterknife.OnClick;
 import personal.bw.shopper.R;
 import personal.bw.shopper.data.models.Product;
+import personal.bw.shopper.housestockproduct.HousestockProductDetailsActivity;
 import personal.bw.shopper.productdetails.ProductDetailsActivity;
 import personal.bw.shopper.productlist.BaseProductListFragment;
 
@@ -110,7 +111,7 @@ public class ShoppingListDetailsFragment extends BaseProductListFragment
 			@Override
 			public void onMoveToHousestock(int clickedProduct)
 			{
-				startMoveToHousestockActivity();
+				startMoveToHousestockActivity(clickedProduct);
 			}
 
 			@Override
@@ -129,11 +130,12 @@ public class ShoppingListDetailsFragment extends BaseProductListFragment
 		};
 	}
 
-
-
-	private void startMoveToHousestockActivity()
+	private void startMoveToHousestockActivity(int clickedProduct)
 	{
-
+		Intent intent = new Intent(getContext(), HousestockProductDetailsActivity.class);
+		intent.putExtra(getString(R.string.intent_action), Action.CONVERT_PRODUCT);
+		intent.putExtra(CLICKED_PRODUCT, clickedProduct);
+		startActivity(intent);
 	}
 
 	@Override
