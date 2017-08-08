@@ -3,6 +3,7 @@ package personal.bw.shopper.productlist.shoppinglist;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.view.*;
 import android.widget.EditText;
 import butterknife.OnClick;
@@ -15,6 +16,8 @@ import personal.bw.shopper.productlist.BaseProductListFragment;
 import java.util.LinkedList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+import static android.support.design.widget.Snackbar.LENGTH_SHORT;
 import static butterknife.ButterKnife.bind;
 import static butterknife.ButterKnife.findById;
 import static java.util.Collections.sort;
@@ -135,7 +138,24 @@ public class ShoppingListDetailsFragment extends BaseProductListFragment
 		Intent intent = new Intent(getContext(), HousestockProductDetailsActivity.class);
 		intent.putExtra(getString(R.string.intent_action), Action.CONVERT_PRODUCT);
 		intent.putExtra(CLICKED_PRODUCT, clickedProduct);
-		startActivity(intent);
+		startActivityForResult(intent, 0);
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		super.onActivityResult(requestCode, resultCode, data);
+		handleConvertToHouseholdResult(resultCode);
+	}
+
+	private void handleConvertToHouseholdResult(int resultCode)
+	{
+		if (resultCode == RESULT_OK)
+		{
+			Snackbar.make(getView(), "Copied product to house stock" , LENGTH_SHORT).show();
+		}else{
+			Snackbar.make(getView(), "Error while copying product to hous stock" , LENGTH_SHORT).show();
+		}
 	}
 
 	@Override

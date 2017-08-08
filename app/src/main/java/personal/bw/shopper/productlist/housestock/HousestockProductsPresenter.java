@@ -45,4 +45,24 @@ public class HousestockProductsPresenter extends BaseShoppingListDetailsPresente
 			}
 		});
 	}
+
+	@Override
+	public void moveToTrash(int clickedProduct)
+	{
+		super.moveToTrash(clickedProduct);
+		getRepository().saveShoppingList(new DataSourceAPI.SaveShoppingListCallback()
+		{
+			@Override
+			public void onShoppingListSave()
+			{
+				getShoppingListsDetailsView().showShoppingListSavedMessage();
+			}
+
+			@Override
+			public void onShoppingListSaveFailure()
+			{
+				getShoppingListsDetailsView().showUnableToSaveShoppingList();
+			}
+		});
+	}
 }

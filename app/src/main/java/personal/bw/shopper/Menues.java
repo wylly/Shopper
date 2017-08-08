@@ -2,12 +2,17 @@ package personal.bw.shopper;
 
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import personal.bw.shopper.productlist.housestock.HousestockActivity;
+import personal.bw.shopper.productlist.trashlist.TrashListActivity;
 import personal.bw.shopper.shoppinglists.ShoppingListsActivity;
+
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 
 public class Menues
@@ -36,9 +41,12 @@ public class Menues
 	}
 
 
-	private static NavigationView.OnNavigationItemSelectedListener getListener(final ActivitiesEnum current, final DrawerLayout mDrawerLayout, final BaseActivity parent)
+	private static OnNavigationItemSelectedListener getListener(
+			final ActivitiesEnum current,
+			final DrawerLayout mDrawerLayout,
+			final BaseActivity parent)
 	{
-		return new NavigationView.OnNavigationItemSelectedListener()
+		return new OnNavigationItemSelectedListener()
 		{
 			@Override
 			public boolean onNavigationItemSelected(MenuItem menuItem)
@@ -48,10 +56,8 @@ public class Menues
 					case R.id.shopping_lists_list_navigation_menu_item:
 						if (!current.equals(ActivitiesEnum.SHOPPING_LISTS))
 						{
-							Intent intent =
-									new Intent(parent.getBaseContext(), ShoppingListsActivity.class);
-							intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-									| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+							Intent intent = new Intent(parent.getBaseContext(), ShoppingListsActivity.class);
+							intent.addFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
 							parent.getBaseContext().startActivity(intent);
 						}
 						break;
@@ -69,23 +75,19 @@ public class Menues
 					case R.id.house_stock_list_navigation_menu_item:
 						if (!current.equals(ActivitiesEnum.HOUSESTOCK))
 						{
-							Intent intent =
-									new Intent(parent, HousestockActivity.class);
-							intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-									| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+							Intent intent = new Intent(parent, HousestockActivity.class);
+							intent.addFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
 							parent.startActivity(intent);
 						}
 //
 						break;
 
 					case R.id.trash_list_navigation_menu_item:
-						if (!current.equals(ActivitiesEnum.TRASHBIN))
+						if (!current.equals(ActivitiesEnum.TRASH_LIST))
 						{
-//							Intent intent =
-//                                        new Intent(TasksActivity.this, StatisticsActivity.class);
-//                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-//                                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                                startActivity(intent);
+							Intent intent = new Intent(parent, TrashListActivity.class);
+							intent.addFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
+							parent.startActivity(intent);
 						}
 						break;
 					default:

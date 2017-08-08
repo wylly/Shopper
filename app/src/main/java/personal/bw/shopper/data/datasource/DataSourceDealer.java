@@ -10,6 +10,7 @@ import personal.bw.shopper.data.models.ShoppingList;
 import java.util.List;
 
 import static personal.bw.shopper.data.datasource.local.ShopHelperDatabaseHelper.HOUSEHOLD_LIST_ID;
+import static personal.bw.shopper.data.datasource.local.ShopHelperDatabaseHelper.TRASH_LIST;
 
 public class DataSourceDealer
 {
@@ -184,13 +185,35 @@ public class DataSourceDealer
 		return getShoppingList(HOUSEHOLD_LIST_ID);
 	}
 
+	public ShoppingList getTrashList()
+	{
+		return getShoppingList(TRASH_LIST);
+	}
+
 	private ShoppingList getShoppingList(long shoppingListId)
 	{
 		return dataBase.readShoppingList(shoppingListId);
 	}
 
-	public void moveToTrash(int clickedProduct)
+	public void moveToTrash(int clickedProduct, @NonNull final PutProductCallback callback)
 	{
-		//todo
+		Product product = getProductFromCache(clickedProduct);
+		deleteProductFromCache(clickedProduct);
+		dataBase.createOrUpdateProduct(product, callback);
+		ShoppingList housestock = getTrashList();
+		dataBase.createShoppingListProduct(housestock, product, new CreateShoppingListProductCallback()
+		{
+			@Override
+			public void onCreateSuccess()
+			{
+				callback.onProductPut(false);
+			}
+
+			@Override
+			public void onCreateFailure()
+			{
+				callback.onPuttingError();
+			}
+		});
 	}
 }

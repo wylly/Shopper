@@ -8,12 +8,11 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import personal.bw.shopper.R;
 import personal.bw.shopper.data.models.Product;
 
 import java.util.List;
-
-import static butterknife.ButterKnife.bind;
 
 public class ProductsListAdapter extends BaseAdapter
 {
@@ -21,39 +20,11 @@ public class ProductsListAdapter extends BaseAdapter
 	private ProductListener itemListener;
 	private Context context;
 
-	@BindView(R.id.label_product_name)
-	TextView productName;
-
-	@BindView(R.id.label_product_brand)
-	TextView productBrand;
-
-	@BindView(R.id.label_product_amount)
-	TextView productAmount;
-
-	@BindView(R.id.products_list_item)
-	View productViewText;
-
-	@BindView(R.id.product_delete_icon)
-	View productDeleteIcon;
-
-	@BindView(R.id.move_to_housestock_product)
-	View productMoveToHousestock;
-
-	@BindView(R.id.checkbox_products_list)
-	CheckBox productCheckBox;
-
 	public ProductsListAdapter(List<Product> products, ProductListener itemListener, Context context)
 	{
 		this.products = products;
 		this.itemListener = itemListener;
 		this.context = context;
-	}
-
-	public void replaceData(List<Product> products)
-	{
-		this.products.clear();
-		this.products.addAll(products);
-		this.notifyDataSetChanged();
 	}
 
 	@Override
@@ -75,42 +46,28 @@ public class ProductsListAdapter extends BaseAdapter
 	}
 
 	@Override
-	public View getView(final int position, View convertView, ViewGroup parent)
+	public View getView(final int position, View view, ViewGroup parent)
 	{
-		View view = convertView;
+		ViewHolder holder;
 
 		if (view == null)
 		{
 			LayoutInflater layoutInflater = LayoutInflater.from(context);
 			view = layoutInflater.inflate(R.layout.product_list_item, null);
-			bind(this, view);
+			holder = new ViewHolder(view);
+			view.setTag(holder);
+		}
+		else
+		{
+			holder = (ViewHolder) view.getTag();
 		}
 
 		final Product product = getItem(position);
-
-		if (product != null)
-		{
-			if (productName != null)
-			{
-				productName.setText(product.getName());
-				productName.invalidate();
-			}
-
-			if (productBrand != null)
-			{
-				productBrand.setText(product.getBrand());
-				productBrand.invalidate();
-			}
-
-			if (productAmount != null)
-			{
-				productAmount.setText(product.getAmount());
-				productAmount.invalidate();
-			}
-		}
-
-		productCheckBox.setChecked(product.getChecked());
-		productViewText.setOnClickListener(new View.OnClickListener()
+		holder.productName.setText(product.getName());
+		holder.productBrand.setText(product.getBrand());
+		holder.productAmount.setText(product.getAmount());
+		holder.productCheckBox.setChecked(product.getChecked());
+		holder.productViewText.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View view)
@@ -118,7 +75,7 @@ public class ProductsListAdapter extends BaseAdapter
 				itemListener.onProductClick(position);
 			}
 		});
-		productDeleteIcon.setOnClickListener(new View.OnClickListener()
+		holder.productDeleteIcon.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View view)
@@ -126,7 +83,15 @@ public class ProductsListAdapter extends BaseAdapter
 				itemListener.onDeleteIconClick(position);
 			}
 		});
-		productCheckBox.setOnClickListener(new View.OnClickListener()
+		holder.productMoveToHousestock.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				itemListener.onMoveToHousestock(position);
+			}
+		});
+		holder.productCheckBox.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View view)
@@ -135,17 +100,7 @@ public class ProductsListAdapter extends BaseAdapter
 				else itemListener.onProductUncheck(position);
 			}
 		});
-		productMoveToHousestock.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				itemListener.onMoveToHousestock(position);
-			}
-		});
 
-		view.invalidate();
-		notifyDataSetChanged();
 		return view;
 	}
 
@@ -160,5 +115,34 @@ public class ProductsListAdapter extends BaseAdapter
 		public void onProductCheck(int clickedProduct);
 
 		public void onProductUncheck(int clickedProduct);
+	}
+
+	static class ViewHolder
+	{
+		@BindView(R.id.label_product_name)
+		TextView productName;
+
+		@BindView(R.id.label_product_brand)
+		TextView productBrand;
+
+		@BindView(R.id.label_product_amount)
+		TextView productAmount;
+
+		@BindView(R.id.products_list_item)
+		View productViewText;
+
+		@BindView(R.id.product_delete_icon)
+		View productDeleteIcon;
+
+		@BindView(R.id.move_to_housestock_product)
+		View productMoveToHousestock;
+
+		@BindView(R.id.checkbox_products_list)
+		CheckBox productCheckBox;
+
+		public ViewHolder(View view)
+		{
+			ButterKnife.bind(this, view);
+		}
 	}
 }

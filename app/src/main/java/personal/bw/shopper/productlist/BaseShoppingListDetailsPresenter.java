@@ -91,7 +91,21 @@ public abstract class BaseShoppingListDetailsPresenter implements ShoppingListDe
 
 	@Override
 	public void moveToTrash(int clickedProduct){
-		repository.moveToTrash(clickedProduct);
+		repository.moveToTrash(clickedProduct, new DataSourceAPI.PutProductCallback()
+		{
+			@Override
+			public void onProductPut(boolean isCreated)
+			{
+				shoppingListsDetailsView.showShoppingListSavedMessage();
+			}
+
+			@Override
+			public void onPuttingError()
+			{
+				shoppingListsDetailsView.showLoadingProductsError();
+			}
+		});
+		loadProducts();
 	}
 
 	@Override
