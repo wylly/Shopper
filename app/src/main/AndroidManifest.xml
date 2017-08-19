@@ -16,12 +16,12 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".productlist.shoppinglist.existingshoppinglist.ExistingShoppingListDetailsActivity" />
-        <activity android:name=".productlist.shoppinglist.newshoppinglist.NewShoppingListDetailsActivity" />
-        <activity android:name=".productlist.housestock.HousestockActivity" />
+        <activity android:name=".productlist.shoppinglist.existingshoppinglist.ExistingShoppingListDetailsActivity" android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity android:name=".productlist.shoppinglist.newshoppinglist.NewShoppingListDetailsActivity" android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity android:name=".productlist.housestock.HousestockActivity" android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity android:name=".productdetails.ProductDetailsActivity" />
         <activity android:name=".housestockproduct.HousestockProductDetailsActivity" />
-        <activity android:name=".productlist.trashlist.TrashListActivity" />
+        <activity android:name=".productlist.trashlist.TrashListActivity" android:windowSoftInputMode="stateAlwaysHidden"/>
     </application>
 
 </manifest>

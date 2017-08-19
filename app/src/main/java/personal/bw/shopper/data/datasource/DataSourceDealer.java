@@ -199,9 +199,10 @@ public class DataSourceDealer
 	{
 		Product product = getProductFromCache(clickedProduct);
 		deleteProductFromCache(clickedProduct);
+		product.setId(0L);
 		dataBase.createOrUpdateProduct(product, callback);
-		ShoppingList housestock = getTrashList();
-		dataBase.createShoppingListProduct(housestock, product, new CreateShoppingListProductCallback()
+		ShoppingList trashList = getTrashList();
+		dataBase.createShoppingListProduct(trashList, product, new CreateShoppingListProductCallback()
 		{
 			@Override
 			public void onCreateSuccess()
