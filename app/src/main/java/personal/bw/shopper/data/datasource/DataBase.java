@@ -2,6 +2,7 @@ package personal.bw.shopper.data.datasource;
 
 import android.content.Context;
 import personal.bw.shopper.ShopperLog;
+import personal.bw.shopper.data.datasource.DataSourceAPI.DeleteProductCallback;
 import personal.bw.shopper.data.models.Product;
 import personal.bw.shopper.data.models.ShoppingList;
 
@@ -174,5 +175,16 @@ public class DataBase
 	public ShoppingList readShoppingList(long shoppingListId)
 	{
 		return shoppingListsRepository.readShoppingList(shoppingListId);
+	}
+
+	public void getProductsWithBarcodeForShoppingList(String barcode, Long shoppingListId,  DataSourceAPI.LoadProductsForShoppingListCallback callback)
+	{
+		ShoppingList shoppingList = shoppingListsRepository.readShoppingList(shoppingListId);
+		productsForShoppingListRepository.readShoppingListProductsWithBarcode(barcode, shoppingList, callback);
+	}
+
+	public void deleteProduct(Product product, DeleteProductCallback callback)
+	{
+		productsForShoppingListRepository.deleteProductFromAllShoppingLists(product, callback);
 	}
 }

@@ -5,14 +5,14 @@ import android.support.annotation.NonNull;
 import personal.bw.shopper.data.datasource.DataSourceDealer;
 import personal.bw.shopper.data.datasource.StringResourcesRepository;
 import personal.bw.shopper.data.models.ShoppingList;
-import personal.bw.shopper.productlist.BaseShoppingListDetailsPresenter;
-import personal.bw.shopper.productlist.ShoppingListDetailsContract;
+import personal.bw.shopper.productlist.BaseProductListPresenter;
+import personal.bw.shopper.productlist.ProductListContract;
 import personal.bw.shopper.shoppinglists.ShoppingListsFragment;
 
-public class ExisitngShoppingListDetailsPresenter extends BaseShoppingListDetailsPresenter
+public class ExisitngShoppingListPresenter extends BaseProductListPresenter
 {
-	public ExisitngShoppingListDetailsPresenter(
-			@NonNull ShoppingListDetailsContract.View shoppingListsDetailsView,
+	public ExisitngShoppingListPresenter(
+			@NonNull ProductListContract.View shoppingListsDetailsView,
 			@NonNull DataSourceDealer shoppingListsRepository,
 			@NonNull StringResourcesRepository stringResourcesRepository,
 			Intent intent)

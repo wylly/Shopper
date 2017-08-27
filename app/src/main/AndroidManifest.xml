@@ -22,6 +22,7 @@
         <activity android:name=".productdetails.ProductDetailsActivity" />
         <activity android:name=".housestockproduct.HousestockProductDetailsActivity" />
         <activity android:name=".productlist.trashlist.TrashListActivity" android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity android:name=".productlist.scanbarcode.ScanBarcodeActivity" android:windowSoftInputMode="stateAlwaysHidden"/>
     </application>
 
 </manifest>

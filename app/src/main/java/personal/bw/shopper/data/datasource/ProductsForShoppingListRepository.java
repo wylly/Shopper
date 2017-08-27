@@ -1,15 +1,26 @@
 package personal.bw.shopper.data.datasource;
 
 import android.content.Context;
+import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
-import com.j256.ormlite.stmt.*;
+import com.j256.ormlite.stmt.DeleteBuilder;
+import com.j256.ormlite.stmt.PreparedDelete;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.SelectArg;
+import personal.bw.shopper.data.datasource.DataSourceAPI.DeleteProductCallback;
 import personal.bw.shopper.data.datasource.local.ShopHelperDatabaseHelper;
+import personal.bw.shopper.data.datasource.queries.DeleteAllProductsForShoppingListQueryBuilder;
+import personal.bw.shopper.data.datasource.queries.ProductsForShoppingListQueryBuilder;
 import personal.bw.shopper.data.models.Product;
 import personal.bw.shopper.data.models.ShoppingList;
 import personal.bw.shopper.data.models.ShoppingListProduct;
+import personal.bw.shopper.untils.ListFilter;
 
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
+
+import static personal.bw.shopper.data.models.ShoppingListProduct.PRODUCT_ID_FIELD_NAME;
 
 public class ProductsForShoppingListRepository
 {
@@ -17,14 +28,17 @@ public class ProductsForShoppingListRepository
 
 	private final ShopHelperDatabaseHelper shopHelperDatabaseHelper;
 
-	private PreparedQuery<Product> getProductsForShoppingListsQuery = null;
-	private PreparedQuery<ShoppingListProduct> getShoppingListProductQuery = null;
-	private PreparedDelete<ShoppingListProduct> deleteProductsForShoppingListsQuery = null;
-
+	private ProductsForShoppingListQueryBuilder productsForShoppingListQueryBuilder;
+	private DeleteAllProductsForShoppingListQueryBuilder deleteAllProductsForShoppingListQueryBuilder;
+	private ListFilter<Product> filter = new ListFilter<>();
 
 	private ProductsForShoppingListRepository(Context context)
 	{
 		shopHelperDatabaseHelper = new ShopHelperDatabaseHelper(context);
+		productsForShoppingListQueryBuilder =
+				new ProductsForShoppingListQueryBuilder(shopHelperDatabaseHelper);
+		deleteAllProductsForShoppingListQueryBuilder =
+				new DeleteAllProductsForShoppingListQueryBuilder(shopHelperDatabaseHelper);
 	}
 
 	static ProductsForShoppingListRepository getINSTANCE(Context context)
@@ -43,7 +57,9 @@ public class ProductsForShoppingListRepository
 		{
 			if (shoppingList.getId() != null)
 			{
-				callback.onProductsForShoppingListLoaded(lookupProductsForShoppingList(shoppingList));
+				PreparedQuery<Product> query = productsForShoppingListQueryBuilder.getQuery(shoppingList);
+				List<Product> productList = shopHelperDatabaseHelper.getProductDao().query(query);
+				callback.onProductsForShoppingListLoaded(productList);
 			}
 			else
 			{
@@ -56,32 +72,36 @@ public class ProductsForShoppingListRepository
 		}
 	}
 
-	private List<Product> lookupProductsForShoppingList(ShoppingList shoppingList) throws SQLException
-	{
-		if (getProductsForShoppingListsQuery == null)
-		{
-			getProductsForShoppingListsQuery = makeProductsForShoppingListQuery();
-		}
-		getProductsForShoppingListsQuery.setArgumentHolderValue(0, shoppingList);
-		return shopHelperDatabaseHelper.getProductDao().query(getProductsForShoppingListsQuery);
-	}
 
-	private PreparedQuery<Product> makeProductsForShoppingListQuery() throws SQLException
+	public void readShoppingListProductsWithBarcode(final String barcode, ShoppingList shoppingList, DataSourceAPI.LoadProductsForShoppingListCallback callback)
 	{
-		QueryBuilder<ShoppingListProduct, Long> shoppingListProductQB = shopHelperDatabaseHelper.getShoppingListProductDao().queryBuilder();
-		shoppingListProductQB.selectColumns(ShoppingListProduct.PRODUCT_ID_FIELD_NAME);
-		SelectArg shoppingListSelectArg = new SelectArg();
-		shoppingListProductQB.where().eq(ShoppingListProduct.SHOPPINGLIST_ID_FIELD_NAME, shoppingListSelectArg);
-		QueryBuilder<Product, Long> productQB = shopHelperDatabaseHelper.getProductDao().queryBuilder();
-		productQB.where().in(Product.ID_FIELD_NAME, shoppingListProductQB);
-		return productQB.prepare();
+		try
+		{
+			PreparedQuery<Product> query = productsForShoppingListQueryBuilder.getQuery(shoppingList);
+			List<Product> productList = shopHelperDatabaseHelper.getProductDao().query(query);
+			LinkedList<Product> filteredProducts = filter.filterResults(productList, new Predicate<Product>()
+			{
+				@Override
+				public boolean apply(Product input)
+				{
+					return barcode.equals(input.getBarCode());
+				}
+			});
+			callback.onProductsForShoppingListLoaded(filteredProducts);
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+			callback.onDataNotAvailable();
+		}
 	}
 
 	public void deleteProductsForShoppingList(ShoppingList shoppingList, DataSourceAPI.DeleteProductsForShoppingListCallback callback)
 	{
 		try
 		{
-			removeProductsForShoppingListFromDB(shoppingList);
+			PreparedDelete<ShoppingListProduct> shoppingListProductPreparedDelete =
+					deleteAllProductsForShoppingListQueryBuilder.removeProductsForShoppingListFromDB(shoppingList);
+			shopHelperDatabaseHelper.getShoppingListProductDao().delete(shoppingListProductPreparedDelete);
 			callback.onProductsDelete();
 		} catch (SQLException e)
 		{
@@ -90,55 +110,6 @@ public class ProductsForShoppingListRepository
 		}
 	}
 
-	private void removeProductsForShoppingListFromDB(ShoppingList shoppingList) throws SQLException
-	{
-		if (deleteProductsForShoppingListsQuery == null)
-		{
-			deleteProductsForShoppingListsQuery = prepareDeleteProductsFroShoppingListQuery();
-		}
-		deleteProductsForShoppingListsQuery.setArgumentHolderValue(0, shoppingList.getId());
-		shopHelperDatabaseHelper.getShoppingListProductDao().delete(deleteProductsForShoppingListsQuery);
-	}
-
-	private PreparedDelete<ShoppingListProduct> prepareDeleteProductsFroShoppingListQuery() throws SQLException
-	{
-		DeleteBuilder<ShoppingListProduct, Long> deleteBuilder = shopHelperDatabaseHelper.getShoppingListProductDao().deleteBuilder();
-		deleteBuilder.where().eq(ShoppingListProduct.SHOPPINGLIST_ID_FIELD_NAME, new SelectArg());
-		return deleteBuilder.prepare();
-	}
-
-	private void readProductForShoppingList(Product product, ShoppingList shoppingList, DataSourceAPI.LoadProductForShoppingListCallback callback)
-	{
-		try
-		{
-			callback.onProductForShoppingListLoad(lookupShoppingListProduct(product, shoppingList));
-		} catch (SQLException e)
-		{
-			callback.onProductForShoppingListLoadFailure();
-		}
-	}
-
-	private ShoppingListProduct lookupShoppingListProduct(Product product, ShoppingList shoppingList) throws SQLException
-	{
-		if (getShoppingListProductQuery == null)
-		{
-			getShoppingListProductQuery = makeProductForShoppingListQuery();
-		}
-		getShoppingListProductQuery.setArgumentHolderValue(0, shoppingList);
-		getShoppingListProductQuery.setArgumentHolderValue(1, product);
-		return shopHelperDatabaseHelper.getShoppingListProductDao().query(getShoppingListProductQuery).get(0);
-	}
-
-	private PreparedQuery<ShoppingListProduct> makeProductForShoppingListQuery() throws SQLException
-	{
-		QueryBuilder<ShoppingListProduct, Long> shoppingListProductQB = shopHelperDatabaseHelper.getShoppingListProductDao().queryBuilder();
-		SelectArg shoppingListSelectArg = new SelectArg();
-		SelectArg productSelectArg = new SelectArg();
-		shoppingListProductQB.where()
-				.eq(ShoppingListProduct.SHOPPINGLIST_ID_FIELD_NAME, shoppingListSelectArg)
-				.eq(ShoppingListProduct.PRODUCT_ID_FIELD_NAME, productSelectArg);
-		return shoppingListProductQB.prepare();
-	}
 
 	public void createShoppingListProduct(ShoppingList shoppingList, Product product, DataSourceAPI.CreateShoppingListProductCallback callback)
 	{
@@ -151,5 +122,46 @@ public class ProductsForShoppingListRepository
 			e.printStackTrace();
 			callback.onCreateFailure();
 		}
+	}
+
+	public void deleteProductFromAllShoppingLists(Product product, DeleteProductCallback callback)
+	{
+		try
+		{
+			deleteProduct(product);
+			deleteShoppingListProducts(product);
+			callback.onProductDeleted();
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+			callback.onDeletionError("Failed to delete product from all shoppinglists");
+		}
+	}
+
+	private void deleteProduct(Product product) throws SQLException
+	{
+		shopHelperDatabaseHelper.getProductDao().delete(product);
+	}
+
+	private void deleteShoppingListProducts(Product product) throws SQLException
+	{
+		PreparedDelete<ShoppingListProduct> deleteQuery = makeShoppingListsForProductQuery(product);
+		shopHelperDatabaseHelper.getShoppingListProductDao().delete(deleteQuery);
+	}
+
+	private PreparedDelete<ShoppingListProduct> makeShoppingListsForProductQuery(Product product) throws SQLException
+	{
+		PreparedDelete<ShoppingListProduct> shoppingListProductQB = getProductForShoppingListQueryBuilder();
+		shoppingListProductQB.setArgumentHolderValue(0, product.getId());
+		return shoppingListProductQB;
+	}
+
+	private PreparedDelete<ShoppingListProduct> getProductForShoppingListQueryBuilder() throws SQLException
+	{
+		DeleteBuilder<ShoppingListProduct, Long> shoppingListProductQB =
+				shopHelperDatabaseHelper.getShoppingListProductDao().deleteBuilder();
+		SelectArg productIdArg = new SelectArg();
+		shoppingListProductQB.where().eq(PRODUCT_ID_FIELD_NAME, productIdArg);
+		return shoppingListProductQB.prepare();
 	}
 }

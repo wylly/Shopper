@@ -6,13 +6,13 @@ import personal.bw.shopper.data.datasource.DataSourceAPI;
 import personal.bw.shopper.data.datasource.DataSourceDealer;
 import personal.bw.shopper.data.datasource.StringResourcesRepository;
 import personal.bw.shopper.data.models.ShoppingList;
-import personal.bw.shopper.productlist.BaseShoppingListDetailsPresenter;
-import personal.bw.shopper.productlist.ShoppingListDetailsContract;
+import personal.bw.shopper.productlist.BaseProductListPresenter;
+import personal.bw.shopper.productlist.ProductListContract;
 
-public class TrashListPresenter extends BaseShoppingListDetailsPresenter
+public class TrashListPresenter extends BaseProductListPresenter
 {
 	public TrashListPresenter(
-			@NonNull ShoppingListDetailsContract.View shoppingListsDetailsView,
+			@NonNull ProductListContract.View shoppingListsDetailsView,
 			@NonNull DataSourceDealer shoppingListsRepository,
 			@NonNull StringResourcesRepository stringResourcesRepository,
 			Intent intent)

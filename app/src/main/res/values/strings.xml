@@ -29,4 +29,5 @@
     <string name="save_product">Save product</string>
     <string name="label_product_due_date">Due date:</string>
     <string name="label_trash">Trash list</string>
+    <string name="label_product_barcode">Barcode</string>
 </resources>

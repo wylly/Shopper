@@ -1,4 +1,4 @@
-package personal.bw.shopper.productlist.trashlist;
+package personal.bw.shopper.productlist.scanbarcode;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,18 +14,25 @@ import personal.bw.shopper.data.models.Product;
 
 import java.util.List;
 
-public class TrashListAdapter extends BaseAdapter
+public class ScanBarcodeListAdapter extends BaseAdapter
 {
 	private CalendarConverter calendarConverter = new CalendarConverter();
 	private List<Product> products;
 	private ProductListener itemListener;
 	private Context context;
 
-	public TrashListAdapter(List<Product> products, ProductListener itemListener, Context context)
+	public ScanBarcodeListAdapter(List<Product> products, ProductListener itemListener, Context context)
 	{
 		this.products = products;
 		this.itemListener = itemListener;
 		this.context = context;
+	}
+
+	public void replaceData(List<Product> products)
+	{
+		this.products.clear();
+		this.products.addAll(products);
+		this.notifyDataSetChanged();
 	}
 
 	@Override
@@ -49,38 +56,30 @@ public class TrashListAdapter extends BaseAdapter
 	@Override
 	public View getView(final int position, View view, ViewGroup parent)
 	{
-		ViewHolder holder;
+		ViewHolder viewHolder;
 
 		if (view == null)
 		{
 			LayoutInflater layoutInflater = LayoutInflater.from(context);
-			view = layoutInflater.inflate(R.layout.trash_list_item, null);
-			holder = new ViewHolder(view);
-			view.setTag(holder);
+			view = layoutInflater.inflate(R.layout.scan_result_list_item, null);
+			viewHolder = new ViewHolder(view);
+			view.setTag(viewHolder);
 		}
 		else
 		{
-			holder = (ViewHolder) view.getTag();
+			viewHolder = ((ViewHolder) view.getTag());
 		}
 
 		final Product product = getItem(position);
-		holder.productName.setText(product.getName());
-		holder.productBrand.setText(product.getBrand());
-		holder.productDate.setText(calendarConverter.toString(product.getBestBefore()));
-		holder.productDeleteIcon.setOnClickListener(new View.OnClickListener()
+		viewHolder.productName.setText(product.getName());
+		viewHolder.productBrand.setText(product.getBrand());
+		viewHolder.productDate.setText(calendarConverter.toString(product.getBestBefore()));
+		viewHolder.productViewText.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View view)
 			{
-				itemListener.onDeleteIconClick(position);
-			}
-		});
-		holder.productViewText.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View view)
-			{
-				itemListener.onProductClick(position);
+				itemListener.onProductClick(products.get(position));
 			}
 		});
 		return view;
@@ -88,9 +87,7 @@ public class TrashListAdapter extends BaseAdapter
 
 	public interface ProductListener
 	{
-		void onProductClick(int clickedProduct);
-
-		void onDeleteIconClick(int clickedProduct);
+		void onProductClick(Product product);
 	}
 
 	static class ViewHolder
@@ -106,9 +103,6 @@ public class TrashListAdapter extends BaseAdapter
 
 		@BindView(R.id.products_list_item)
 		View productViewText;
-
-		@BindView(R.id.product_delete_icon)
-		View productDeleteIcon;
 
 		public ViewHolder(View view)
 		{

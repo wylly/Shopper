@@ -8,11 +8,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import personal.bw.shopper.productlist.housestock.HousestockActivity;
+import personal.bw.shopper.productlist.scanbarcode.ScanBarcodeActivity;
 import personal.bw.shopper.productlist.trashlist.TrashListActivity;
 import personal.bw.shopper.shoppinglists.ShoppingListsActivity;
-
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 
 public class Menues
@@ -56,19 +54,15 @@ public class Menues
 					case R.id.shopping_lists_list_navigation_menu_item:
 						if (!current.equals(ActivitiesEnum.SHOPPING_LISTS))
 						{
-							Intent intent = new Intent(parent.getBaseContext(), ShoppingListsActivity.class);
-							intent.addFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
-							parent.getBaseContext().startActivity(intent);
+							Intent intent = new Intent(parent, ShoppingListsActivity.class);
+							parent.startActivity(intent);
 						}
 						break;
 					case R.id.scan_barcode_navigation_menu_item:
 						if (!current.equals(ActivitiesEnum.BARCODE))
 						{
-//                                    Intent intent =
-//                                        new Intent(TasksActivity.this, StatisticsActivity.class);
-//                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-//                                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                                startActivity(intent);
+							Intent intent = new Intent(parent, ScanBarcodeActivity.class);
+							parent.startActivity(intent);
 						}
 
 						break;
@@ -76,7 +70,6 @@ public class Menues
 						if (!current.equals(ActivitiesEnum.HOUSESTOCK))
 						{
 							Intent intent = new Intent(parent, HousestockActivity.class);
-							intent.addFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
 							parent.startActivity(intent);
 						}
 //
@@ -86,7 +79,6 @@ public class Menues
 						if (!current.equals(ActivitiesEnum.TRASH_LIST))
 						{
 							Intent intent = new Intent(parent, TrashListActivity.class);
-							intent.addFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
 							parent.startActivity(intent);
 						}
 						break;

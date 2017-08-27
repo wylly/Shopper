@@ -92,5 +92,21 @@
                     android:id="@+id/input_product_due_date"
                     />
 
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_product_barcode"
+                    android:layout_margin="@dimen/list_item_padding"
+                    android:textSize="15sp"
+                    />
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:ems="13"
+                    android:layout_margin="@dimen/list_item_padding"
+                    android:id="@+id/input_product_barcode"
+                    />
         </LinearLayout>
     </ScrollView>

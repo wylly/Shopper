@@ -13,17 +13,17 @@ import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public abstract class BaseShoppingListDetailsPresenter implements ShoppingListDetailsContract.Presenter
+public abstract class BaseProductListPresenter implements ProductListContract.Presenter
 {
 	private final DataSourceDealer repository;
-	private final ShoppingListDetailsContract.View shoppingListsDetailsView;
+	private final ProductListContract.View shoppingListsDetailsView;
 	private final ShoppingList shoppingList;
 	private final StringResourcesRepository stringResourcesRepository;
 
-	public BaseShoppingListDetailsPresenter(@NonNull ShoppingListDetailsContract.View shoppingListsDetailsView,
-											@NonNull DataSourceDealer shoppingListsRepository,
-											@NonNull StringResourcesRepository stringResourcesRepository,
-											Intent intent)
+	public BaseProductListPresenter(@NonNull ProductListContract.View shoppingListsDetailsView,
+									@NonNull DataSourceDealer shoppingListsRepository,
+									@NonNull StringResourcesRepository stringResourcesRepository,
+									Intent intent)
 	{
 		this.repository = checkNotNull(shoppingListsRepository, "shoppingListDetailsFragment cannot be null");
 		this.shoppingListsDetailsView = shoppingListsDetailsView;
@@ -70,7 +70,7 @@ public abstract class BaseShoppingListDetailsPresenter implements ShoppingListDe
 		});
 	}
 
-	private void processProducts(List<Product> products)
+	public void processProducts(List<Product> products)
 	{
 		if (products.isEmpty())
 		{
@@ -170,7 +170,7 @@ public abstract class BaseShoppingListDetailsPresenter implements ShoppingListDe
 		return stringResourcesRepository;
 	}
 
-	public ShoppingListDetailsContract.View getShoppingListsDetailsView()
+	public ProductListContract.View getShoppingListsDetailsView()
 	{
 		return shoppingListsDetailsView;
 	}

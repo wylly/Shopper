@@ -22,6 +22,8 @@ public interface HousestockProductDetailsContract
 
 		void setDueDate(String dueDate);
 
+		void setBarcode(String barcode);
+
 		boolean isActive();
 
 		void setAmount(String amount);
@@ -29,6 +31,6 @@ public interface HousestockProductDetailsContract
 
 	interface Presenter extends BasePresenter
 	{
-		void saveProduct(String name, String brand, String description, String amount, String dueDate);
+		void saveProduct(String name, String brand, String description, String amount, String dueDate, String barcode);
 	}
 }

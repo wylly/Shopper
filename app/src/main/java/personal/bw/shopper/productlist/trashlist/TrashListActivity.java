@@ -7,7 +7,7 @@ import personal.bw.shopper.ActivitiesEnum;
 import personal.bw.shopper.BaseActivity;
 import personal.bw.shopper.data.datasource.DataSourceDealer;
 import personal.bw.shopper.data.datasource.StringResourcesRepositoryImpl;
-import personal.bw.shopper.productlist.ShoppingListDetailsContract;
+import personal.bw.shopper.productlist.ProductListContract;
 
 import static personal.bw.shopper.ActivitiesEnum.TRASH_LIST;
 
@@ -18,7 +18,7 @@ public class TrashListActivity extends BaseActivity
 	{
 		super.onCreate(savedInstanceState);
 		new TrashListPresenter(
-				(ShoppingListDetailsContract.View) setupViewFragment(),
+				(ProductListContract.View) setupViewFragment(),
 				DataSourceDealer.getINSTANCE(getApplicationContext()),
 				new StringResourcesRepositoryImpl(getBaseContext()),
 				getIntent());

@@ -26,11 +26,11 @@ import static android.view.View.VISIBLE;
 import static android.widget.Toast.LENGTH_SHORT;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public abstract class BaseProductListFragment extends Fragment implements ShoppingListDetailsContract.View
+public abstract class BaseProductListFragment extends Fragment implements ProductListContract.View
 {
 	public static final String CLICKED_PRODUCT = "CLICKED PRODUCT";
 
-	private ShoppingListDetailsContract.Presenter presenter;
+	private ProductListContract.Presenter presenter;
 
 	protected BaseAdapter listAdapter;
 	protected LinearLayout productsView;
@@ -240,12 +240,12 @@ public abstract class BaseProductListFragment extends Fragment implements Shoppi
 	}
 
 	@Override
-	public void setPresenter(@NonNull ShoppingListDetailsContract.Presenter presenter)
+	public void setPresenter(@NonNull ProductListContract.Presenter presenter)
 	{
 		this.presenter = checkNotNull(presenter);
 	}
 
-	public ShoppingListDetailsContract.Presenter getPresenter()
+	public ProductListContract.Presenter getPresenter()
 	{
 		return presenter;
 	}

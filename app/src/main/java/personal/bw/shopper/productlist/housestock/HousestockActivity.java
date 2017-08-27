@@ -7,7 +7,7 @@ import personal.bw.shopper.ActivitiesEnum;
 import personal.bw.shopper.BaseActivity;
 import personal.bw.shopper.data.datasource.DataSourceDealer;
 import personal.bw.shopper.data.datasource.StringResourcesRepositoryImpl;
-import personal.bw.shopper.productlist.ShoppingListDetailsContract;
+import personal.bw.shopper.productlist.ProductListContract;
 
 import static personal.bw.shopper.ActivitiesEnum.HOUSESTOCK;
 
@@ -18,7 +18,7 @@ public class HousestockActivity extends BaseActivity
 	{
 		super.onCreate(savedInstanceState);
 		new HousestockProductsPresenter(
-				(ShoppingListDetailsContract.View) setupViewFragment(),
+				(ProductListContract.View) setupViewFragment(),
 				DataSourceDealer.getINSTANCE(getApplicationContext()),
 				new StringResourcesRepositoryImpl(getBaseContext()),
 				getIntent());
@@ -35,6 +35,4 @@ public class HousestockActivity extends BaseActivity
 	{
 		return HOUSESTOCK;
 	}
-
-
 }

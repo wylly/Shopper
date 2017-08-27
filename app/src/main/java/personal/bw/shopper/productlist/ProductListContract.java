@@ -6,11 +6,10 @@ import personal.bw.shopper.data.models.Product;
 
 import java.util.List;
 
-public interface ShoppingListDetailsContract
+public interface ProductListContract
 {
 	interface View extends BaseView<Presenter>
 	{
-
 		void setLoadingIndicator(boolean b);
 
 		void showProducts(List<Product> products);

@@ -1,7 +1,7 @@
 package personal.bw.shopper.housestockproduct;
 
 import android.support.annotation.NonNull;
-import personal.bw.shopper.CalendarConverter;
+import personal.bw.shopper.untils.CalendarConverter;
 import personal.bw.shopper.data.datasource.DataSourceAPI;
 import personal.bw.shopper.data.datasource.DataSourceDealer;
 import personal.bw.shopper.data.models.Product;
@@ -45,15 +45,16 @@ public class ConvertProductToHousestockDetailsPresenter implements HousestockPro
 			productDetailsView.setBrand(product.getBrand());
 			productDetailsView.setDescription(product.getDescription());
 			productDetailsView.setDueDate(calendarConverter.toString(product.getBestBefore()));
+			productDetailsView.setBarcode(product.getBarCode());
 		}
 	}
 
 	@Override
-	public void saveProduct(String name, String brand, String description, String amount, String dueDate)
+	public void saveProduct(String name, String brand, String description, String amount, String dueDate, String barcode)
 	{
 		try
 		{
-			Product product = makeProduct(name, brand, description, amount, dueDate);
+			Product product = makeProduct(name, brand, description, amount, dueDate, barcode);
 			saveProduct(product);
 		} catch (ParseException e)
 		{
@@ -80,13 +81,14 @@ public class ConvertProductToHousestockDetailsPresenter implements HousestockPro
 		});
 	}
 
-	private Product makeProduct(String name, String brand, String description, String amount, String dueDate) throws ParseException
+	private Product makeProduct(String name, String brand, String description, String amount, String dueDate, String barcode) throws ParseException
 	{
 		return new ProductBuilder(name)
 				.withBrand(brand)
 				.withDescription(description)
 				.withAmount(amount)
 				.withBestBefore(dueDate)
+				.withBarCode(barcode)
 				.build();
 	}
 }

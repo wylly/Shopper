@@ -1,6 +1,7 @@
 package personal.bw.shopper.housestockproduct;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,9 +10,12 @@ import android.support.v4.app.Fragment;
 import android.view.*;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
-import personal.bw.shopper.CalendarConverter;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+import personal.bw.shopper.untils.CalendarConverter;
 import personal.bw.shopper.DatePickerDialogUpdater;
 import personal.bw.shopper.DatePickerFragment;
 import personal.bw.shopper.R;
@@ -38,6 +42,9 @@ public class HousestockProductDetailsFragment extends Fragment implements Houses
 
 	@BindView(R.id.input_product_due_date)
 	TextView dueDate;
+
+	@BindView(R.id.input_product_barcode)
+	TextView barcode;
 
 	private View rootView;
 	private CalendarConverter calendarConverter = new CalendarConverter();
@@ -93,7 +100,8 @@ public class HousestockProductDetailsFragment extends Fragment implements Houses
 						brand.getText().toString(),
 						description.getText().toString(),
 						amount.getText().toString(),
-						dueDate.getText().toString()
+						dueDate.getText().toString(),
+						barcode.getText().toString()
 				);
 				break;
 			}
@@ -107,7 +115,29 @@ public class HousestockProductDetailsFragment extends Fragment implements Houses
 
 	private void startScanBarCodeActivity()
 	{
+		IntentIntegrator.forSupportFragment(this).initiateScan();
+	}
 
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+		if (result != null)
+		{
+			if (result.getContents() == null)
+			{
+				Toast.makeText(getContext(), "Cancelled", Toast.LENGTH_LONG).show();
+			}
+			else
+			{
+				Toast.makeText(getContext(), "Scanned: " + result.getContents(), Toast.LENGTH_SHORT).show();
+				barcode.setText(result.getContents());
+			}
+		}
+		else
+		{
+			super.onActivityResult(requestCode, resultCode, data);
+		}
 	}
 
 	@Override
@@ -175,6 +205,12 @@ public class HousestockProductDetailsFragment extends Fragment implements Houses
 	public void setAmount(String amount)
 	{
 		this.amount.setText(amount);
+	}
+
+	@Override
+	public void setBarcode(String barcode)
+	{
+		this.barcode.setText(barcode);
 	}
 
 	@Override

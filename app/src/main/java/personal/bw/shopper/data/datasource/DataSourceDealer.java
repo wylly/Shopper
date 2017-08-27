@@ -200,21 +200,44 @@ public class DataSourceDealer
 		Product product = getProductFromCache(clickedProduct);
 		deleteProductFromCache(clickedProduct);
 		product.setId(0L);
-		dataBase.createOrUpdateProduct(product, callback);
-		ShoppingList trashList = getTrashList();
-		dataBase.createShoppingListProduct(trashList, product, new CreateShoppingListProductCallback()
+		moveProductToTrash(product, callback);
+	}
+
+	public void moveProductToTrash(final Product product,@NonNull final PutProductCallback callback)
+	{
+		dataBase.deleteProduct(product, new DeleteProductCallback()
 		{
 			@Override
-			public void onCreateSuccess()
+			public void onProductDeleted()
 			{
-				callback.onProductPut(false);
+				dataBase.createOrUpdateProduct(product, callback);
+				ShoppingList trashList = getTrashList();
+				dataBase.createShoppingListProduct(trashList, product, new CreateShoppingListProductCallback()
+				{
+					@Override
+					public void onCreateSuccess()
+					{
+						callback.onProductPut(false);
+					}
+
+					@Override
+					public void onCreateFailure()
+					{
+						callback.onPuttingError();
+					}
+				});
 			}
 
 			@Override
-			public void onCreateFailure()
+			public void onDeletionError(String s)
 			{
 				callback.onPuttingError();
 			}
 		});
+	}
+
+	public void getProductsWithBarcode(String barcode, LoadProductsForShoppingListCallback callback)
+	{
+		dataBase.getProductsWithBarcodeForShoppingList(barcode, HOUSEHOLD_LIST_ID, callback);
 	}
 }

@@ -10,6 +10,7 @@ import java.util.Date;
 public class Product implements Serializable
 {
 	public final static String ID_FIELD_NAME = "id";
+	public static final String BAR_CODE_FIELD_NAME = "bar_code";
 
 	@DatabaseField(generatedId = true, columnName = ID_FIELD_NAME)
 	private Long id;
@@ -29,7 +30,7 @@ public class Product implements Serializable
 	@DatabaseField
 	private Date bestBefore;
 
-	@DatabaseField
+	@DatabaseField(columnName = BAR_CODE_FIELD_NAME)
 	private String barCode;
 
 	@DatabaseField

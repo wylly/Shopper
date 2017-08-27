@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import personal.bw.shopper.CalendarConverter;
+import personal.bw.shopper.untils.CalendarConverter;
 import personal.bw.shopper.R;
 import personal.bw.shopper.data.models.Product;
 

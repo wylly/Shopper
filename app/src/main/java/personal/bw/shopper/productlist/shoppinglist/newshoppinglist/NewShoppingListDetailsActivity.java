@@ -7,7 +7,7 @@ import personal.bw.shopper.ActivitiesEnum;
 import personal.bw.shopper.BaseActivity;
 import personal.bw.shopper.data.datasource.DataSourceDealer;
 import personal.bw.shopper.data.datasource.StringResourcesRepositoryImpl;
-import personal.bw.shopper.productlist.ShoppingListDetailsContract;
+import personal.bw.shopper.productlist.ProductListContract;
 import personal.bw.shopper.productlist.shoppinglist.ShoppingListDetailsFragment;
 
 import static personal.bw.shopper.ActivitiesEnum.SHOPPING_LIST_DETAILS;
@@ -19,8 +19,8 @@ public class NewShoppingListDetailsActivity extends BaseActivity
 	{
 		super.onCreate(savedInstanceState);
 
-		new NewShoppingListDetailsPresenter(
-				(ShoppingListDetailsContract.View) setupViewFragment(),
+		new NewShoppingListPresenter(
+				(ProductListContract.View) setupViewFragment(),
 				DataSourceDealer.getINSTANCE(getApplicationContext()),
 				new StringResourcesRepositoryImpl(getBaseContext()),
 				getIntent());

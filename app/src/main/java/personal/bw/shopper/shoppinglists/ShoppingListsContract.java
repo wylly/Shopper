@@ -20,8 +20,6 @@ public interface ShoppingListsContract
 
 		void showSuccessfullySavedMessage();
 
-		void showShoppingListDetailsUi(String taskId);
-
 		void showLoadingShoppingListsError();
 
 		boolean isActive();

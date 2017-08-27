@@ -1,6 +1,6 @@
 package personal.bw.shopper.data.models.builders;
 
-import personal.bw.shopper.CalendarConverter;
+import personal.bw.shopper.untils.CalendarConverter;
 import personal.bw.shopper.data.models.Product;
 
 import java.text.ParseException;
