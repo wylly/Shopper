@@ -1,12 +1,16 @@
 package personal.bw.shopper.housestockproduct;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.*;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -15,10 +19,13 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import personal.bw.shopper.untils.CalendarConverter;
+import org.springframework.http.converter.xml.SimpleXmlHttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
 import personal.bw.shopper.DatePickerDialogUpdater;
 import personal.bw.shopper.DatePickerFragment;
 import personal.bw.shopper.R;
+import personal.bw.shopper.untils.CalendarConverter;
+import personal.bw.shopper.upcdatabaseintegration.ProductInfo;
 
 import static android.app.Activity.RESULT_OK;
 import static butterknife.ButterKnife.bind;
@@ -124,14 +131,15 @@ public class HousestockProductDetailsFragment extends Fragment implements Houses
 		IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
 		if (result != null)
 		{
-			if (result.getContents() == null)
+			String barcode = result.getContents();
+			if (barcode == null)
 			{
 				Toast.makeText(getContext(), "Cancelled", Toast.LENGTH_LONG).show();
 			}
 			else
 			{
-				Toast.makeText(getContext(), "Scanned: " + result.getContents(), Toast.LENGTH_SHORT).show();
-				barcode.setText(result.getContents());
+				this.barcode.setText(barcode);
+				new HttpRequestTask().execute();
 			}
 		}
 		else
@@ -139,6 +147,7 @@ public class HousestockProductDetailsFragment extends Fragment implements Houses
 			super.onActivityResult(requestCode, resultCode, data);
 		}
 	}
+
 
 	@Override
 	public void goToProductsList()
@@ -208,6 +217,43 @@ public class HousestockProductDetailsFragment extends Fragment implements Houses
 	}
 
 	@Override
+	public void showProductDataDialog(final ProductInfo productInfo)
+	{
+		new AlertDialog.Builder(getActivity())
+				.setTitle("Product information")
+				.setMessage(productInfo.toString())
+				.setPositiveButton("Replace data", new DialogInterface.OnClickListener()
+				{
+					public void onClick(DialogInterface dialog, int id)
+					{
+						presenter.replaceData(productInfo);
+					}
+				})
+				.setNeutralButton("Add barcode", new DialogInterface.OnClickListener()
+				{
+					@Override
+					public void onClick(DialogInterface dialog, int which)
+					{
+						presenter.replaceBarcode(productInfo.getNumber());
+					}
+				})
+				.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+				{
+					public void onClick(DialogInterface dialog, int id)
+					{
+						// User cancelled the dialog
+					}
+				}).create()
+				.show();
+	}
+
+	@Override
+	public void showInvalid(ProductInfo productInfo)
+	{
+		Toast.makeText(getContext(), "No data available", Toast.LENGTH_LONG).show();
+	}
+
+	@Override
 	public void setBarcode(String barcode)
 	{
 		this.barcode.setText(barcode);
@@ -223,5 +269,36 @@ public class HousestockProductDetailsFragment extends Fragment implements Houses
 	public void updateDate(int day, int month, int year)
 	{
 		this.dueDate.setText(calendarConverter.toString(day, month, year));
+	}
+
+	private class HttpRequestTask extends AsyncTask<Void, Void, ProductInfo>
+	{
+
+		@Deprecated
+		@Override
+		protected ProductInfo doInBackground(Void... params)
+		{
+			try
+			{
+				String url = "http://api.upcdatabase.org/xml/850aca5553bf50d155f5383b97911149/" + barcode.getText();
+				RestTemplate restTemplate = new RestTemplate();
+				SimpleXmlHttpMessageConverter messageConverter = new SimpleXmlHttpMessageConverter();
+				restTemplate.getMessageConverters().add(messageConverter);
+				return restTemplate.getForObject(url, ProductInfo.class);
+			} catch (Exception e)
+			{
+				Log.e("MainActivity", e.getMessage(), e);
+			}
+
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(ProductInfo productInfo)
+		{
+			String barcodeNumber = barcode.getText().toString();
+			presenter.handleResponse(productInfo, barcodeNumber);
+		}
+
 	}
 }

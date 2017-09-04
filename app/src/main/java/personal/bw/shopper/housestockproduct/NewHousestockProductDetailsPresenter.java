@@ -1,11 +1,12 @@
 package personal.bw.shopper.housestockproduct;
 
 import android.support.annotation.NonNull;
-import personal.bw.shopper.untils.CalendarConverter;
 import personal.bw.shopper.data.datasource.DataSourceAPI;
 import personal.bw.shopper.data.datasource.DataSourceDealer;
 import personal.bw.shopper.data.models.Product;
 import personal.bw.shopper.data.models.builders.ProductBuilder;
+import personal.bw.shopper.untils.CalendarConverter;
+import personal.bw.shopper.upcdatabaseintegration.ProductInfo;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -34,7 +35,7 @@ public class NewHousestockProductDetailsPresenter implements HousestockProductDe
 	}
 
 	@Override
-	public void saveProduct(String name, String brand, String description, String amount, String dueDate,String barcode)
+	public void saveProduct(String name, String brand, String description, String amount, String dueDate, String barcode)
 	{
 		try
 		{
@@ -58,6 +59,37 @@ public class NewHousestockProductDetailsPresenter implements HousestockProductDe
 		} catch (ParseException e)
 		{
 			productDetailsView.showProductSaveErrorMessage("Could not save product, date parsing error");
+		}
+	}
+
+	@Override
+	public void handleResponse(ProductInfo productInfo, String barcodeNumber)
+	{
+		if (productInfo.isValid() && barcodeNumber.equals(productInfo.getNumber()))
+		{
+			productDetailsView.showProductDataDialog(productInfo);
+		}else{
+			productDetailsView.showInvalid(productInfo);
+		}
+	}
+
+	@Override
+	public void replaceData(ProductInfo productInfo)
+	{
+		if (productDetailsView.isActive())
+		{
+			productDetailsView.setName(productInfo.getItemname());
+			productDetailsView.setDescription(productInfo.getFullDescription());
+			productDetailsView.setBarcode(productInfo.getNumber());
+		}
+	}
+
+	@Override
+	public void replaceBarcode(String barcode)
+	{
+		if (productDetailsView.isActive())
+		{
+			productDetailsView.setBarcode(barcode);
 		}
 	}
 
